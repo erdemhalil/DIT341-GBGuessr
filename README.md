@@ -60,8 +60,6 @@ Open the `server` and `client` in separate VSCode workspaces or open the combine
 ## System Definition (MS0)
 
 ### Purpose
-
-2-5 sentences describing what the system does
 The system's purpose is to give a fun and adventurous way to learn more about Gothenburg. The user can take quizzes with questions about Gothenburg.
 When answering the questions correctly the user gets points, the total points for a quiz will get saved to the leaderboard.
 
