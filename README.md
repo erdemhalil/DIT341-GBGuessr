@@ -66,8 +66,6 @@ The system's purpose is to give a fun and adventurous way to learn more about Go
 When answering the questions correctly the user gets points, the total points for a quiz will get saved to the leaderboard.
 
 ### Pages
-
-* Home: 1-3 sentences describing what the page displays and what a user can do
 * Register: A page where the user can register.
 * Login: Login page so the user can authenticate themselves.
 * Map: Shows an overview of Gothenburg. Users can pick quizzes to complete.
