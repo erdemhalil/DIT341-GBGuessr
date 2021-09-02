@@ -66,8 +66,9 @@ When answering the questions correctly the user gets points, the total points fo
 ### Pages
 * Register: A page where the user can register.
 * Login: Login page so the user can authenticate themselves.
-* Map: Shows an overview of Gothenburg. Users can pick quizzes to complete.
+* Home/Map: Shows an overview of Gothenburg. Users can go to log-in/register/leaderboards page, pick quizzes to complete.
 * Quiz: The quiz questions are displayed and the user can answer the question.
+* Leaderboards: User can view the highest scores by other users on different quizzes.
 
 
 ### Entity-Relationship (ER) Diagram
