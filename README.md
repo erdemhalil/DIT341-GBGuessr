@@ -60,7 +60,7 @@ Open the `server` and `client` in separate VSCode workspaces or open the combine
 ## System Definition (MS0)
 
 ### Purpose
-The system's purpose is to provide a fun and adventurous way to learn more about Gothenburg. The user can take quizzes with questions about Gothenburg, or guess the location on a map based on an image. When answering the questions correctly the user gets points, the total points for a quiz will get saved to the leaderboard.
+The system's purpose is to provide a fun and adventurous way to learn more about Gothenburg's geography, history, and culture. The user can take quizzes featuring trivia questions, or guessing locations in Gothenburg based on an image or text description. When answering the questions correctly the user gets points, and the total points for a quiz will get saved to a leaderboard.
 
 ### Pages
 * Register: A page where the user can register.
