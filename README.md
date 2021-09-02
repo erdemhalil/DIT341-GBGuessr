@@ -62,11 +62,17 @@ Open the `server` and `client` in separate VSCode workspaces or open the combine
 ### Purpose
 
 2-5 sentences describing what the system does
+The system's purpose is to give a fun and adventurous way to learn more about Gothenburg. The user can take quizzes with questions about Gothenburg.
+When answering the questions correctly the user gets points, the total points for a quiz will get saved to the leaderboard.
 
 ### Pages
 
 * Home: 1-3 sentences describing what the page displays and what a user can do
-* Shopping cart: ...
+* Register: A page where the user can register.
+* Login: Login page so the user can authenticate themselves.
+* Map: Shows an overview of Gothenburg. Users can pick quizzes to complete.
+* Quiz: The quiz questions are displayed and the user can answer the question.
+
 
 ### Entity-Relationship (ER) Diagram
 
