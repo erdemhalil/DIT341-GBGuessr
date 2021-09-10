@@ -19,38 +19,86 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }, 
     console.log(`Connected to MongoDB with URI: ${mongoURI}`);
 });
 
-// Create Express app
 var app = express();
-// Parse requests of content-type 'application/json'
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// HTTP request logger
 app.use(morgan('dev'));
-// Enable cross-origin resource sharing for frontend must be registered before api
 app.options('*', cors());
 app.use(cors());
 
-// Import routes
 app.get('/api', function(req, res) {
     res.json({'message': 'Welcome to your DIT341 backend ExpressJS project!'});
 });
 
-// Catch all non-error handler for api (i.e., 404 Not Found)
+app.get('/api/quiz', function (req, res) {
+    res.json({'quiz': 'list of all quizzes'});
+  })
+
+app.get('/api/quiz/:id', function (req, res) {
+    res.json({'quiz': 'get quiz by id'});
+  })
+
+app.post('/api/quiz/:id', function (req, res) {
+    res.json({'quiz': 'submit specific quiz on completion by user'});
+  })
+
+app.get('/api/quiz/question', function (req, res) {
+    res.json({'question': 'list of all questions'});
+  })
+
+app.get('/api/quiz/question/:id', function (req, res) {
+    res.json({'question': 'get question by id'});
+  })
+
+app.get('/api/location', function (req, res) {
+    res.json({'location': 'list all locations'});
+  })
+
+app.get('/api/location/:id', function (req, res) {
+    res.json({'location': 'get location by ud'});
+  })
+
+app.get('/api/score/:id', function (req, res) {
+    res.json({'score': 'get highscore by id'});
+  })
+
+app.get('/api/score', function (req, res) {
+    res.json({'score': 'list of all highscores'});
+  })
+
+app.post('/api/score', function (req, res) {
+    res.json({'score': 'add new score'});
+})
+
+app.patch('/api/score', function (req, res) { // If user only can har one score saved
+    res.json({'score': 'update user score'});
+})
+
+app.post('/api/user/register', function (req, res) {
+    res.json({'register': 'create new user'});
+  })
+
+app.post('/api/user/login', function (req, res) {
+    res.json({'authentication': 'user authentication'});
+  })
+
+
+
+
+
 app.use('/api/*', function (req, res) {
     res.status(404).json({ 'message': 'Not Found' });
 });
 
-// Configuration for serving frontend in production mode
-// Support Vuejs HTML 5 history mode
+
+
 app.use(history());
-// Serve static assets
+
 var root = path.normalize(__dirname + '/..');
 var client = path.join(root, 'client', 'dist');
 app.use(express.static(client));
 
-// Error handler (i.e., when exception is thrown) must be registered last
 var env = app.get('env');
-// eslint-disable-next-line no-unused-vars
 app.use(function(err, req, res, next) {
     console.error(err.stack);
     var err_res = {
