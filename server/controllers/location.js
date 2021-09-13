@@ -1,12 +1,26 @@
 var express = require('express');
 const router = express.Router()
-    
+var Location = require('../models/locations');
+   
 router.get('/', function (req, res) {
-    res.json({'location': 'list all locations'});
-  })
+  Location.find(function(err, locations) {
+    if(err) {return next(err);}
+    res.json({Location: locations})
+})  
+})
+
+router.post('/', function (req, res) {
+  var location = new Location(req.body);
+  location.save(err => {if (err) return next(err)
+  res.status(201).json(location)
+});
+})
 
 router.get('/:id', function (req, res) {
-    res.json({'location': 'get location by ud'});
-  })
+  Location.find({id: req.body.id}, function(err, locations) {
+    if(err) {return next(err);}
+    res.json({Location: locations})
+})  
+})
 
 module.exports = router
