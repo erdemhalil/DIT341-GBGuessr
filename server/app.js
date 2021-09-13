@@ -6,7 +6,7 @@ var cors = require('cors');
 var history = require('connect-history-api-fallback');
 
 // Variables
-var mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/animalDevelopmentDB';
+var mongoURI = process.env.MONGODB_URI || 'mongodb+srv://webproject:gettingvg12@cluster0.vsylh.mongodb.net/group31?retryWrites=true&w=majority';
 var port = process.env.PORT || 3000;
 
 // Connect to MongoDB
