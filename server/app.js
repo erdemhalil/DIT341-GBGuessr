@@ -11,15 +11,20 @@ var port = process.env.PORT || 3000;
 
 // Connect to MongoDB
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }, function(err) {
-    if (err) {
-        console.error(`Failed to connect to MongoDB with URI: ${mongoURI}`);
-        console.error(err.stack);
-        process.exit(1);
-    }
-    console.log(`Connected to MongoDB with URI: ${mongoURI}`);
+  if (err) {
+    console.error(`Failed to connect to MongoDB with URI: ${mongoURI}`);
+    console.error(err.stack);
+    process.exit(1);
+  }
+  console.log(`Connected to MongoDB with URI: ${mongoURI}`);
 });
 
 var app = express();
+app.use('/api/user', require('./controllers/user'))
+app.use('/api/location', require('./controllers/location'))
+app.use('/api/quiz', require('./controllers/quiz'))
+app.use('/api/score', require('./controllers/score'))
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(morgan('dev'));
@@ -29,62 +34,6 @@ app.use(cors());
 app.get('/api', function(req, res) {
     res.json({'message': 'Welcome to your DIT341 backend ExpressJS project!'});
 });
-
-app.get('/api/quiz', function (req, res) {
-    res.json({'quiz': 'list of all quizzes'});
-  })
-
-app.get('/api/quiz/:id', function (req, res) {
-    res.json({'quiz': 'get quiz by id'});
-  })
-
-app.post('/api/quiz/:id', function (req, res) {
-    res.json({'quiz': 'submit specific quiz on completion by user'});
-  })
-
-app.get('/api/quiz/question', function (req, res) {
-    res.json({'question': 'list of all questions'});
-  })
-
-app.get('/api/quiz/question/:id', function (req, res) {
-    res.json({'question': 'get question by id'});
-  })
-
-app.get('/api/location', function (req, res) {
-    res.json({'location': 'list all locations'});
-  })
-
-app.get('/api/location/:id', function (req, res) {
-    res.json({'location': 'get location by ud'});
-  })
-
-app.get('/api/score/:id', function (req, res) {
-    res.json({'score': 'get highscore by id'});
-  })
-
-app.get('/api/score', function (req, res) {
-    res.json({'score': 'list of all highscores'});
-  })
-
-app.post('/api/score', function (req, res) {
-    res.json({'score': 'add new score'});
-})
-
-app.patch('/api/score', function (req, res) { // If user only can har one score saved
-    res.json({'score': 'update user score'});
-})
-
-app.post('/api/user/register', function (req, res) {
-    res.json({'register': 'create new user'});
-  })
-
-app.post('/api/user/login', function (req, res) {
-    res.json({'authentication': 'user authentication'});
-  })
-
-
-
-
 
 app.use('/api/*', function (req, res) {
     res.status(404).json({ 'message': 'Not Found' });
