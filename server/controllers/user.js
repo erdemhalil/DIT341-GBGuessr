@@ -16,5 +16,16 @@ router.post('/authenticate', function (req, res) {
     })
 }) // JWT Token? for authentication
 
+router.delete('/:id', function (req, res, next){
+     var id = req.params.id;
+     User.findByIdAndDelete(id, function(err, users){
+         if(err) { return next(err); }
+         if(users == null){
+             return res.status(404).json(
+                 {"message": "User not found"})
+         }
+         res.json(user);
+     });
+});
 
 module.exports = router

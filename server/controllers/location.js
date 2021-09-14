@@ -23,4 +23,14 @@ router.get('/:id', function (req, res) {
 })  
 })
 
+router.delete('/', function (req, res, next){
+  Location.deleteMany({}, function(err, locations){
+    if(err) { return next(err); }
+    if(locations == null){
+      return res.status(404).json(
+          {"message": "Location not found"})
+    }
+  });
+});
+
 module.exports = router
