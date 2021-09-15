@@ -20,10 +20,6 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }, 
 });
 
 var app = express();
-app.use('/api/user', require('./controllers/user'))
-app.use('/api/location', require('./controllers/location'))
-app.use('/api/quiz', require('./controllers/quiz'))
-app.use('/api/score', require('./controllers/score'))
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -34,6 +30,10 @@ app.use(cors());
 app.get('/api', function(req, res) {
     res.json({'message': 'Welcome to your DIT341 backend ExpressJS project!'});
 });
+app.use('/api/user', require('./controllers/user'))
+app.use('/api/location', require('./controllers/location'))
+app.use('/api/quiz', require('./controllers/quiz'))
+app.use('/api/score', require('./controllers/score'))
 
 app.use('/api/*', function (req, res) {
     res.status(404).json({ 'message': 'Not Found' });

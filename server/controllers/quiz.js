@@ -1,25 +1,50 @@
 var express = require('express');
 const router = express.Router()
-    
-router.get('/', function (req, res) {
-    res.json({'quiz': 'list of all quizzes'});
-  })
+var Quiz = require('../models/quizes');
+var Question = require('../models/questions');
+
+router.post('/', function (req, res) {
+  var quizes = new Quiz(req.body);
+  quizes.save(err => {if (err) return next(err)
+  res.status(201).json(quizes)
+});
+})
+
+  router.get('/', function (req, res) {
+    Quiz.find(function(err, quizes) {
+      if(err) {return next(err);}
+      res.json({quiz: quizes})
+  })  
+})
 
 router.get('/:id', function (req, res) {
-    res.json({'quiz': 'get quiz by id'});
-  })
+  Quiz.find({id: req.body.id }, function(err, quizes) {
+    if(err) {return next(err);}
+    res.json({quiz: quizes})
+})    
+})
 
-router.post('/:id', function (req, res) {
-    res.json({'quiz': 'submit specific quiz on completion by user'});
-  })
+
+router.post('/question', function (req, res) {
+  var question = new Quiz(req.body);
+  question.save(err => {if (err) return next(err)
+  res.status(201).json(question)
+});
+})
 
 router.get('/question', function (req, res) {
-    res.json({'question': 'list of all questions'});
-  })
+  Question.find(function(err, questions) {
+    if(err) {return next(err);}
+    res.json({question: questions})
+})  
+})
 
 router.get('/question/:id', function (req, res) {
-    res.json({'question': 'get question by id'});
-  })
+  Question.find({id: req.body.id }, function(err, questions) {
+    if(err) {return next(err);}
+    res.json({question: questions})
+})    
+})
 
 
 module.exports = router
