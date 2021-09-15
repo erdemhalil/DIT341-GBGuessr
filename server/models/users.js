@@ -5,8 +5,8 @@ var Schema = mongoose.Schema;
 // 'minLength' and 'maxLength' for password
 
 var userSchema = new Schema({
-    email: { type: String, unique: true},
-    password: { type: String},
+    email: { type: String, unique: true, required: true},
+    password: { type: String, required: true},
     created_on: { type: Date, default: Date.now()}
 });
 

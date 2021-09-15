@@ -30,10 +30,11 @@ app.use(cors());
 app.get('/api', function(req, res) {
     res.json({'message': 'Welcome to your DIT341 backend ExpressJS project!'});
 });
-app.use('/api/user', require('./controllers/user'))
-app.use('/api/location', require('./controllers/location'))
-app.use('/api/quiz', require('./controllers/quiz'))
-app.use('/api/score', require('./controllers/score'))
+app.use('/api/users', require('./controllers/user'))
+app.use('/api/locations', require('./controllers/location'))
+app.use('/api/quizes', require('./controllers/quiz'))
+app.use('/api/questions', require('./controllers/question'))
+app.use('/api/scores', require('./controllers/score'))
 
 app.use('/api/*', function (req, res) {
     res.status(404).json({ 'message': 'Not Found' });
