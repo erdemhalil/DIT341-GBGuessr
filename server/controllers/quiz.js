@@ -1,4 +1,5 @@
 var express = require('express');
+const questions = require('../models/questions');
 const router = express.Router()
 var Quiz = require('../models/quizes');
 
@@ -73,6 +74,25 @@ router.patch('/:id', function (req, res, next){
       res.json(quiz);
   });
 });
+
+
+router.get('/:id/questions', function (req, res, next){
+  var id = req.params.id;
+  Questions.find((err, questions) => {
+    if(err){return next(err)}
+    var questionsId = [];
+      questions.forEach(question =>{
+        if(question.quiz_id == id){
+          questionsId.push(question)
+        }
+      })
+    if(questionsId.length == 0){
+      return res.status(404).json({"message": "Question not found"})
+    }  
+    res.json({"questions": questionsId})
+  })
+})
+
 
 
 module.exports = router

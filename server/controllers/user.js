@@ -20,6 +20,7 @@ router.get('/', function (req, res, next) {
   })  
   })
 
+// !?!?!?!!?
 router.post('/register', function (req, res, next) {
     var user = new User(req.body);
     user.save(err => {if (err) return next(err)
@@ -27,6 +28,7 @@ router.post('/register', function (req, res, next) {
 });
 })
 
+//?!?!?!
 router.post('/authenticate', function (req, res) {
     User.find({email: req.body.email, password: req.body.password }, function(err, users) {
         if(err) {return next(err);}

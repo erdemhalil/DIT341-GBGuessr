@@ -39,7 +39,7 @@ router.put('/:id', function (req, res, next){
   Score.findById(id, function(err, scores){
       if(err){ return next(err); }
       if(scores == null){
-          return res.status(404).json({"message": "score not found"});
+          return res.status(404).json({"message": "Score not found"});
       }
       scores.email = req.body.email;
       scores.password = req.body.password;
@@ -53,7 +53,7 @@ router.patch('/:id', function (req, res, next){
   Score.findById(id, function(err, scores){
       if(err){ return next(err); }
       if(scores == null){
-          return res.status(404).json({"message": "score not found"});
+          return res.status(404).json({"message": "Score not found"});
       }
       scores.value = (req.body.value || scores.value);
       scores.rank = (req.body.rank || scores.rank);

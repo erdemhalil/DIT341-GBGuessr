@@ -51,7 +51,7 @@ router.put('/:id', function (req, res, next){
   Question.findById(id, function(err, question){
       if(err){ return next(err); }
       if(question == null){
-          return res.status(404).json({"message": "question not found"});
+          return res.status(404).json({"message": "Question not found"});
       }
       question.type = req.body.type;
       question.description = req.body.description;
@@ -67,7 +67,7 @@ router.patch('/:id', function (req, res, next){
   Question.findById(id, function(err, question){
       if(err){ return next(err); }
       if(question == null){
-          return res.status(404).json({"message": "quesiton not found"});
+          return res.status(404).json({"message": "Quesiton not found"});
       }
       question.type = (req.body.type || question.description);
       question.description = (req.body.description || question.description);

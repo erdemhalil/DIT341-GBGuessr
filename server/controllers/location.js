@@ -37,7 +37,7 @@ router.delete('/:id', function(req, res, next){
   Location.findOneAndDelete({_id: req.params.id}, function(err, locations){
       if (err) { return next(err); }
       if (quiz == null) {
-          return res.status(404).json({"message": "Quiz not found"});
+          return res.status(404).json({"message": "Location not found"});
       }
       res.json(locations);
   });
@@ -49,7 +49,7 @@ router.put('/:id', function (req, res, next){
   Location.findById(id, function(err, location){
       if(err){ return next(err); }
       if(location == null){
-          return res.status(404).json({"message": "User not found"});
+          return res.status(404).json({"message": "Location not found"});
       }
       location.picture = req.body.picture;
       location.x_coordinate = req.body.x_coordinate;
@@ -64,7 +64,7 @@ router.patch('/:id', function (req, res, next){
   Location.findById(id, function(err, location){
       if(err){ return next(err); }
       if(location == null){
-          return res.status(404).json({"message": "User not found"});
+          return res.status(404).json({"message": "Location not found"});
       }
       location.picture = (req.body.picture || location.picture);
       location.x_coordinate = (req.body.x_coordinate || location.x_coordinate);
