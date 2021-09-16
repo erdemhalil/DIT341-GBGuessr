@@ -13,14 +13,14 @@ router.post('/', function (req, res, next) {
 router.get('/', function (req, res, next) {
   Question.find(function(err, questions) {
     if(err) {return next(err);}
-    res.status(200).json({question: questions})
+    res.status(200).json(questions)
 })  
 })
 
 router.get('/:id', function (req, res, next) {
   Question.findById(req.params.id, function(err, questions) {
     if(err) {return next(err);}
-    res.status(200).json({question: questions})
+    res.status(200).json(questions)
 })    
 })
 
@@ -28,12 +28,12 @@ router.get('/:id', function (req, res, next) {
 router.delete('/', function (req, res, next){
   Question.deleteMany({}, function(err, question){
     if(err) { return next(err); }
-    if(question == null){
+    if(question.deletedCount == 0){
       return res.status(404).json(
           {"message": "Question not found"})
     }
+    res.status(200).json({"message": "questions deleted"});
   });
-  res.status(200).json({"message": "questions deleted"});
 });
 
 router.delete('/:id', function(req, res, next){
