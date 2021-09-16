@@ -1,6 +1,8 @@
 var express = require('express');
+const Question = require('../models/questions');
 const router = express.Router()
 var Quiz = require('../models/quizes');
+var Location = require('../models/locations');
 
 router.post('/', function (req, res, next) {
   var quizes = new Quiz(req.body);
@@ -12,16 +14,24 @@ router.post('/', function (req, res, next) {
 router.get('/', function (req, res, next) {
     Quiz.find(function(err, quizes) {
       if(err) {return next(err);}
-      res.json({quiz: quizes})
+      res.status(200).json({quiz: quizes})
   })  
+})
+
+router.get('/filter', function (req, res, next) {
+  Quiz.find({category: req.query.category}, function(err, quizes) {
+    if(err) {return next(err);}
+    res.status(200).json({quiz: quizes})
+})  
 })
 
 router.get('/:id', function (req, res, next) {
   Quiz.findById(req.params.id, function(err, quizes) {
     if(err) {return next(err);}
-    res.json({quiz: quizes})
+    res.status(200).json({quiz: quizes})
 })    
 })
+
 
 router.delete('/', function(req, res, next){
     var id = req.params.id;
@@ -30,7 +40,7 @@ router.delete('/', function(req, res, next){
         if (quiz.deletedCount == 0) {
             return res.status(404).json({"message": "Quiz not found"});
         }
-        res.json({"message": "All quizes deleted"});
+        res.status(200).json({"message": "All quizes deleted"});
     });
 });
 
@@ -41,8 +51,8 @@ router.delete('/:id', function(req, res, next){
       if (quiz == null) {
           return res.status(404).json({"message": "Quiz not found"});
       }
-      res.json(quiz);
-  });
+      res.status(200).json({"message": "quize deleted"});
+    });
 });
 
 
@@ -56,7 +66,7 @@ router.put('/:id', function (req, res, next){
       quiz.category = req.body.category;
       quiz.name = req.body.name;
       quiz.save();
-      res.json(quiz);
+      res.status(200).json(quiz);
   });
 });
 
@@ -70,9 +80,60 @@ router.patch('/:id', function (req, res, next){
       quiz.category = (req.body.category || quiz.category);
       quiz.name = (req.body.name || quiz.name);
       quiz.save();
-      res.json(quiz);
+      res.status(200).json(quiz);
   });
 });
+
+
+router.get('/:id/questions', function (req, res, next){
+  // var id = req.params.id;
+  // var result = [];
+  // var questionsId = [];
+  // Question.find((err, questions) => {
+  //   if(err){return next(err)}
+  //     questions.forEach(question =>{
+  //       if(question.quiz_id == id){
+  //         if (question.location_id != undefined) {
+  //           questionsId.push(question.location_id)
+  //         }
+
+  //       }
+  //     })
+        
+  //     console.log(questionsId)
+        
+  //     Location.find((err, locations) => {
+  //       if(err){return next(err)}
+  //       locations.forEach(location =>{
+  //         questionsId.forEach(question => {
+  //           console.log(question)
+  //           if(location._id == question){
+  //             result.push(location)
+  //           }
+  //         })
+  //         console.log(result)
+
+  //       })
+//   res.json({"questions": result})
+// })
+// })
+// })
+
+var id = req.params.id;
+  Question.find((err, questions) => {
+    if(err){return next(err)}
+    var questionsId = [];
+      questions.forEach(question =>{
+        if(question.quiz_id == id){
+          questionsId.push(question)
+        }
+      })
+    if(questionsId.length == 0){
+      return res.status(404).json({"message": "Question not found"})
+    }  
+    res.json({"questions": questionsId})
+  })
+})
 
 
 module.exports = router
