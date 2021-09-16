@@ -5,7 +5,7 @@ var Location = require('../models/locations');
 router.get('/', function (req, res, next) {
   Location.find(function(err, locations) {
     if(err) {return next(err);}
-    res.json({Location: locations})
+    res.status(200).json({Location: locations})
 })  
 })
 
@@ -19,7 +19,7 @@ router.post('/', function (req, res, next) {
 router.get('/:id', function (req, res, next) {
   Location.findById(req.params.id, function(err, locations) {
     if(err) {return next(err);}
-    res.json({Location: locations})
+    res.status(200).json({Location: locations})
 })  
 })
 
@@ -31,6 +31,8 @@ router.delete('/', function (req, res, next){
           {"message": "Location not found"})
     }
   });
+  
+  res.status(200).json({"message": "all locations deleted"})
 });
 
 router.delete('/:id', function(req, res, next){
@@ -39,7 +41,7 @@ router.delete('/:id', function(req, res, next){
       if (quiz == null) {
           return res.status(404).json({"message": "Location not found"});
       }
-      res.json(locations);
+      res.status(200).json(locations);
   });
 });
 
@@ -55,7 +57,7 @@ router.put('/:id', function (req, res, next){
       location.x_coordinate = req.body.x_coordinate;
       location.y_coordinate = req.body.y_coordinate;
       location.save();
-      res.json(location);
+      res.status(200).json(location);
   });
 });
 
@@ -70,7 +72,7 @@ router.patch('/:id', function (req, res, next){
       location.x_coordinate = (req.body.x_coordinate || location.x_coordinate);
       location.y_coordinate = (req.body.y_coordinate || location.y_coordinate);
       location.save();
-      res.json(location);
+      res.status(200).json(location);
   });
 });
 

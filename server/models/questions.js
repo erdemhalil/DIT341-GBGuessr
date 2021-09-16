@@ -5,6 +5,7 @@ var Schema = mongoose.Schema;
 
 var questionSchema = new Schema({
     quiz_id: { type: Schema.Types.ObjectId, ref: 'quizes', required: true},
+    location_id: { type: Schema.Types.ObjectId, ref: 'locations'},
     type: { type: String},
     description: { type: String, required: true},
     answer: { type: String, required: true},

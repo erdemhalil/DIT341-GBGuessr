@@ -4,7 +4,7 @@ var Question = require('../models/questions');
 
 
 router.post('/', function (req, res, next) {
-  var question = new Quiz(req.body);
+  var question = new Question(req.body);
   question.save(err => {if (err) return next(err)
   res.status(201).json(question)
 });
@@ -13,14 +13,14 @@ router.post('/', function (req, res, next) {
 router.get('/', function (req, res, next) {
   Question.find(function(err, questions) {
     if(err) {return next(err);}
-    res.json({question: questions})
+    res.status(200).json({question: questions})
 })  
 })
 
 router.get('/:id', function (req, res, next) {
   Question.findById(req.params.id, function(err, questions) {
     if(err) {return next(err);}
-    res.json({question: questions})
+    res.status(200).json({question: questions})
 })    
 })
 
@@ -33,6 +33,7 @@ router.delete('/', function (req, res, next){
           {"message": "Question not found"})
     }
   });
+  res.status(200).json({"message": "questions deleted"});
 });
 
 router.delete('/:id', function(req, res, next){
@@ -41,8 +42,8 @@ router.delete('/:id', function(req, res, next){
       if (question == null) {
           return res.status(404).json({"message": "Question not found"});
       }
-      res.json(question);
-  });
+      res.status(200).json({"message": "question deleted"});
+    });
 });
 
 
@@ -54,11 +55,12 @@ router.put('/:id', function (req, res, next){
           return res.status(404).json({"message": "Question not found"});
       }
       question.type = req.body.type;
+      question.location_id = req.body.location_id;
       question.description = req.body.description;
       question.answer = req.body.answer;
       question.score = req.body.score;
       question.save();
-      res.json(question);
+      res.status(200).json(question);
   });
 });
 
@@ -70,12 +72,13 @@ router.patch('/:id', function (req, res, next){
           return res.status(404).json({"message": "Quesiton not found"});
       }
       question.type = (req.body.type || question.description);
+      question.location_id = (req.body.location_id || question.location_id);
       question.description = (req.body.description || question.description);
       question.answer = (req.body.answer || question.answer);
       question.score = (req.body.score || question.score);
 
       question.save();
-      res.json(question);
+      res.status(200).json(question);
   });
 });
 

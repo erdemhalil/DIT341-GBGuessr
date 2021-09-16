@@ -13,14 +13,14 @@ router.post('/', function (req, res, next) {
 router.get('/', function (req, res, next) {
       Score.find(function(err, scores) {
         if(err) {return next(err);}
-        res.json({score: scores})
+        res.status(200).json({score: scores})
     })  
   })
   
   router.get('/:id', function (req, res, next) {
     Score.findById(req.params.id, function(err, scores) {
       if(err) {return next(err);}
-      res.json({score: scores})
+      res.status(200).json({score: scores})
   })    
   })
 
@@ -30,9 +30,8 @@ router.delete('/:id', function(req, res, next){
         if (score == null) {
             return res.status(404).json({"message": "Score not found"});
         }
-        res.json(score);
-    });
-});
+        res.status(200).json({"message": "score deleted"});    });
+      });
 
 router.put('/:id', function (req, res, next){
   var id = req.params.id;
@@ -41,10 +40,10 @@ router.put('/:id', function (req, res, next){
       if(scores == null){
           return res.status(404).json({"message": "Score not found"});
       }
-      scores.email = req.body.email;
-      scores.password = req.body.password;
+      scores.value = req.body.value;
+      scores.rank = req.body.rank;
       scores.save();
-      res.json(scores);
+      res.status(200).json(scores);
   });
 });
 
@@ -58,7 +57,7 @@ router.patch('/:id', function (req, res, next){
       scores.value = (req.body.value || scores.value);
       scores.rank = (req.body.rank || scores.rank);
       scores.save();
-      res.json(scores);
+      res.status(200).json(scores);
   });
 });
 
