@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "0af6e1b6-f29d-4866-9a36-f2d42e9f8f41",
+		"_postman_id": "d4ad1aa5-44d6-4a32-ab93-0c672a793bbb",
 		"name": "WebDev",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -18,7 +18,11 @@
 									"var jsonData = pm.response.json();\r",
 									"pm.globals.set(\"user_id\", jsonData._id);\r",
 									"// the variable is global so it can be used for the other CRUD parts\r",
-									"// takes the id of whatever json file and sets it to \"user_id\" variable"
+									"// takes the id of whatever json file and sets it to \"user_id\" variable\r",
+									"\r",
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -29,7 +33,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \r\n}",
+							"raw": "{\r\n    \"email\": \"email@email.com\",\r\n    \"password\": \"password\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -101,7 +105,15 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"\"613f60e094b72d9af98f1495\""
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response should have valid JSON data\", function() {\r",
+									"    var jsonData=pm.response.json();\r",
+									"    pm.expect(jsonData.email).to.eql('email@email.com');\r",
+									"    pm.expect(jsonData.password).to.eql('password');\r",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -145,6 +157,11 @@
 								"exec": [
 									"pm.test(\"response is CREATED\", function() {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response should have valid JSON data\", function() {\r",
+									"    var jsonData=pm.response.json();\r",
+									"    pm.expect(jsonData.password).to.eql('poggies');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -156,7 +173,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"password\": \"poggies\"\r\n}",
+							"raw": "{\r\n    \"email\": \"email@email.com\",\r\n    \"password\": \"poggies\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -186,6 +203,12 @@
 								"exec": [
 									"pm.test(\"response is CREATED\", function() {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response should have valid JSON data\", function() {\r",
+									"    var jsonData=pm.response.json();\r",
+									"    pm.expect(jsonData.email).to.eql('frank@gmail.com');\r",
+									"    pm.expect(jsonData.password).to.eql('yesss');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -236,6 +259,10 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{host}}/api/users/{{user_id}}",
 							"host": [
@@ -263,7 +290,11 @@
 							"script": {
 								"exec": [
 									"var jsonData = pm.response.json();\r",
-									"pm.globals.set(\"location_id\", jsonData._id);"
+									"pm.globals.set(\"location_id\", jsonData._id);\r",
+									"\r",
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -274,7 +305,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"picture\": \"imgurlinkorsomething\",\r\n    \"x_coordinate\": \"16\",\r\n    \"y_coordinate\": \"12\"\r\n}",
+							"raw": "{\r\n    \"picture\": \"pic\",\r\n    \"x_coordinate\": \"16\",\r\n    \"y_coordinate\": \"12\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -297,17 +328,30 @@
 				},
 				{
 					"name": "get All Locations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/api/user/{{location_id}}",
+							"raw": "{{host}}/api/locations/{{location_id}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"user",
+								"locations",
 								"{{location_id}}"
 							]
 						}
@@ -316,17 +360,45 @@
 				},
 				{
 					"name": "get Location by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response should have valid JSON data\", function() {\r",
+									"    var jsonData=pm.response.json();\r",
+									"    pm.expect(jsonData.picture).to.eql('pic');\r",
+									"    pm.expect(jsonData.x_coordinate).to.eql(16);\r",
+									"    pm.expect(jsonData.y_coordinate).to.eql(12);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
-							"raw": "{{host}}/api/user/{{location_id}}",
+							"raw": "{{host}}/api/locations/{{location_id}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"user",
+								"locations",
 								"{{location_id}}"
 							]
 						}
@@ -335,17 +407,44 @@
 				},
 				{
 					"name": "patch Location",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response should have valid JSON data\", function() {\r",
+									"    var jsonData=pm.response.json();\r",
+									"    pm.expect(jsonData.picture).to.eql('newPic');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PATCH",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"picture\": \"newPic\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{host}}/api/user/{{location_id}}",
+							"raw": "{{host}}/api/locations/{{location_id}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"user",
+								"locations",
 								"{{location_id}}"
 							]
 						}
@@ -354,6 +453,26 @@
 				},
 				{
 					"name": "put Location",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response should have valid JSON data\", function() {\r",
+									"    var jsonData=pm.response.json();\r",
+									"    pm.expect(jsonData.picture).to.eql('anotherlink');\r",
+									"    pm.expect(jsonData.x_coordinate).to.eql(6);\r",
+									"    pm.expect(jsonData.y_coordinate).to.eql(25);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -382,6 +501,19 @@
 				},
 				{
 					"name": "delete Location",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -394,6 +526,41 @@
 								"api",
 								"locations",
 								"{{location_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete all Locations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Expect 404 because the only created location is already deleted in the previous test\r",
+									"\r",
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/locations/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"locations",
+								""
 							]
 						}
 					},
@@ -412,7 +579,11 @@
 							"script": {
 								"exec": [
 									"var jsonData = pm.response.json();\r",
-									"pm.globals.set(\"quiz_id\", jsonData._id);"
+									"pm.globals.set(\"quiz_id\", jsonData._id);\r",
+									"\r",
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -446,6 +617,19 @@
 				},
 				{
 					"name": "get All Quizes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -465,6 +649,25 @@
 				},
 				{
 					"name": "get Quiz by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response should have valid JSON data\", function() {\r",
+									"    var jsonData=pm.response.json();\r",
+									"    pm.expect(jsonData.category).to.eql('Large');\r",
+									"    pm.expect(jsonData.name).to.eql('The Mega Quiz');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -483,7 +686,63 @@
 					"response": []
 				},
 				{
+					"name": "filter Quiz by category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/quizes/filter?category=Large",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"quizes",
+								"filter"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "Large"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "patch Quiz",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response should have valid JSON data\", function() {\r",
+									"    var jsonData=pm.response.json();\r",
+									"    pm.expect(jsonData.name).to.eql('The Renamed Quiz');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PATCH",
 						"header": [],
@@ -512,12 +771,31 @@
 				},
 				{
 					"name": "put Quiz",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response should have valid JSON data\", function() {\r",
+									"    var jsonData=pm.response.json();\r",
+									"    pm.expect(jsonData.category).to.eql('change');\r",
+									"    pm.expect(jsonData.name).to.eql('Vlad');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"picture\": \"anotherlink\",\r\n    \"x_coordinate\": \"6\",\r\n    \"y_coordinate\": \"25\"\r\n}",
+							"raw": "{\r\n    \"category\": \"change\",\r\n    \"name\": \"Vlad\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -540,6 +818,19 @@
 				},
 				{
 					"name": "delete Quiz",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -552,6 +843,39 @@
 								"api",
 								"quizes",
 								"{{quiz_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete all Quizes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Expect 404 because the only created location is already deleted in the previous test\r",
+									"\r",
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/quizes",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"quizes"
 							]
 						}
 					},
@@ -570,7 +894,11 @@
 							"script": {
 								"exec": [
 									"var jsonData = pm.response.json();\r",
-									"pm.globals.set(\"question_id\", jsonData._id);"
+									"pm.globals.set(\"question_id\", jsonData._id);\r",
+									"\r",
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -581,7 +909,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"type\": \"True OR False\",\r\n    \"description\": \"What happened here?\",\r\n    \"answer\": \"Nothing\",\r\n    \"score\": \"100\"\r\n}",
+							"raw": "{\r\n    \"quiz_id\": \"{{quiz_id}}\",\r\n    \"type\": \"True OR False\",\r\n    \"description\": \"What happened here?\",\r\n    \"answer\": \"Nothing\",\r\n    \"score\": \"100\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -603,6 +931,19 @@
 				},
 				{
 					"name": "get All Questions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -622,6 +963,19 @@
 				},
 				{
 					"name": "get Question by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -640,7 +994,58 @@
 					"response": []
 				},
 				{
+					"name": "get Question by Quiz ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/quizes/{{quiz_id}}/questions",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"quizes",
+								"{{quiz_id}}",
+								"questions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "patch Question",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response should have valid JSON data\", function() {\r",
+									"    var jsonData=pm.response.json();\r",
+									"    pm.expect(jsonData.score).to.eql(500);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PATCH",
 						"header": [],
@@ -669,6 +1074,27 @@
 				},
 				{
 					"name": "put Question",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response should have valid JSON data\", function() {\r",
+									"    var jsonData=pm.response.json();\r",
+									"    pm.expect(jsonData.type).to.eql('Prompt');\r",
+									"    pm.expect(jsonData.description).to.eql('What happened here, again?');\r",
+									"    pm.expect(jsonData.answer).to.eql('Nothing again');\r",
+									"    pm.expect(jsonData.score).to.eql(150);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -697,6 +1123,19 @@
 				},
 				{
 					"name": "delete Question",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -709,6 +1148,40 @@
 								"api",
 								"questions",
 								"{{question_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete All Questions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Expect 404 because the only created location is already deleted in the previous test\r",
+									"\r",
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/questions/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"questions",
+								""
 							]
 						}
 					},
@@ -727,7 +1200,11 @@
 							"script": {
 								"exec": [
 									"var jsonData = pm.response.json();\r",
-									"pm.globals.set(\"score_id\", jsonData._id);"
+									"pm.globals.set(\"score_id\", jsonData._id);\r",
+									"\r",
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -761,6 +1238,19 @@
 				},
 				{
 					"name": "get All Scores",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -780,6 +1270,19 @@
 				},
 				{
 					"name": "get Score by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -799,12 +1302,30 @@
 				},
 				{
 					"name": "patch Score",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response should have valid JSON data\", function() {\r",
+									"    var jsonData=pm.response.json();\r",
+									"    pm.expect(jsonData.value).to.eql(2000);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"value\": \"2000\",\r\n}",
+							"raw": "{\r\n    \"value\": \"2000\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -827,6 +1348,25 @@
 				},
 				{
 					"name": "put Score",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response should have valid JSON data\", function() {\r",
+									"    var jsonData=pm.response.json();\r",
+									"    pm.expect(jsonData.value).to.eql(150);\r",
+									"    pm.expect(jsonData.rank).to.eql(12);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -855,6 +1395,19 @@
 				},
 				{
 					"name": "delete Score",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "DELETE",
 						"header": [],

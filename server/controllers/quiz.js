@@ -14,21 +14,21 @@ router.post('/', function (req, res, next) {
 router.get('/', function (req, res, next) {
     Quiz.find(function(err, quizes) {
       if(err) {return next(err);}
-      res.status(200).json({quiz: quizes})
+      res.status(200).json(quizes)
   })  
 })
 
 router.get('/filter', function (req, res, next) {
   Quiz.find({category: req.query.category}, function(err, quizes) {
     if(err) {return next(err);}
-    res.status(200).json({quiz: quizes})
-})  
+    res.status(200).json(quizes)
+}) 
 })
 
 router.get('/:id', function (req, res, next) {
   Quiz.findById(req.params.id, function(err, quizes) {
     if(err) {return next(err);}
-    res.status(200).json({quiz: quizes})
+    res.status(200).json(quizes)
 })    
 })
 
@@ -51,7 +51,7 @@ router.delete('/:id', function(req, res, next){
       if (quiz == null) {
           return res.status(404).json({"message": "Quiz not found"});
       }
-      res.status(200).json({"message": "quize deleted"});
+      res.status(200).json({"message": "Quiz deleted"});
     });
 });
 
