@@ -5,7 +5,10 @@
       <router-link to="/quiz">Quiz</router-link>
       <router-link to="/Leaderboard">Leaderboard</router-link>
       <router-link to="/quiz/0">Take quiz (add id in url)</router-link>
-
+      <div class="nav-links">
+          <router-link to="/" id="sign-up">SIGN UP</router-link>
+          <router-link to="/">LOG IN</router-link>
+      </div>
     </div>
     <!-- Render the content of the current page view -->
     <router-view/>
@@ -21,7 +24,33 @@
   color: #2c3e50;
 }
 
-#nav a{
-  padding: 40px;
+#nav {
+  min-width: 100%;
+  background:linear-gradient(45deg, #369093, #b3b3b3);
+  height: 50px;
+  padding-left: 100px;
 }
+
+#nav a{
+  padding: 15px 20px 20px 0px;
+  color: #FFF;
+  font-weight: 700;
+  float: left;
+}
+
+#nav a:hover {
+  text-decoration: none;
+}
+
+.nav-links {
+  float: right;
+}
+
+#sign-up {
+  background: #369093;
+  padding: 8px 20px 8px 20px!important;
+  border-radius: 50px;
+  margin: 4px 10px 0px 0px;
+}
+
 </style>
