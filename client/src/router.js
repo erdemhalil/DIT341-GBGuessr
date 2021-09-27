@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import Quiz from './views/Quiz.vue'
+import Leaderboard from './views/Leaderboard.vue'
+import TakeQuiz from './views/TakeQuiz.vue'
 
 Vue.use(Router)
 
@@ -12,6 +15,21 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/quiz',
+      name: 'quiz',
+      component: Quiz
+    },
+    {
+      path: '/leaderboard',
+      name: 'leaderboard',
+      component: Leaderboard
+    },
+    {
+      path: '/quiz/:id',
+      name: 'take_quiz',
+      component: TakeQuiz
     }
   ]
 })

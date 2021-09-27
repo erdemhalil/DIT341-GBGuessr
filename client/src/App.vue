@@ -2,6 +2,10 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link>
+      <router-link to="/quiz">Quiz</router-link>
+      <router-link to="/Leaderboard">Leaderboard</router-link>
+      <router-link to="/quiz/0">Take quiz (add id in url)</router-link>
+
     </div>
     <!-- Render the content of the current page view -->
     <router-view/>
@@ -15,5 +19,9 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+#nav a{
+  padding: 40px;
 }
 </style>
