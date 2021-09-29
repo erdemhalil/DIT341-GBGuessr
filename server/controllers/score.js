@@ -61,4 +61,22 @@ router.patch('/:id', function (req, res, next){
   });
 });
 
+router.get('/quizes/:id', function (req, res, next){
+
+var id = req.params.id;
+var matchedScores = [];
+Score.find((err, scores) => {
+  if(err){return next(err)}
+    scores.forEach(score =>{
+      if(score.quiz_id == id){
+        matchedScores.push(score)
+      }
+    })
+    if(matchedScores.length == 0){
+      return res.status(404).json({"message": "No scores for particular quiz"})
+    }  
+    res.json(matchedScores)
+  })
+})
+
 module.exports = router
