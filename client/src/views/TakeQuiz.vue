@@ -2,17 +2,24 @@
   <div>
     <b-jumbotron header="Take quiz" lead=""/>
   <div class="question-container">
-    <div class="meta-data-header"><span id="quiz-meta-name">{{quiz.name}}</span> <span id="quiz-meta-timer">10:39</span>
-    <div class="question-step-info-container"><span id="question-step-header">Question</span> <span id="current-step">{{step}}</span><span id="total-quiz-length">/{{ questions.length }}</span></div>
+    <div class="meta-data-header"><span id="quiz-meta-name">{{quiz.name}}</span> <span id="quiz-meta-timer">{{ timer }} Seconds</span>
+    <div class="question-step-info-container"><span id="question-step-header">Question</span> <span id="current-step">{{step + 1}}</span><span id="total-quiz-length">/{{ questions.length }}</span></div>
     </div>
     <div class="answer-table">
-    <p>{{ questions[0].description }}</p>
-    <span class="question-option" v-for="i in 4" :key="i" >Lorem<input name="option" type="radio"></span>
+    <p>{{ questions[step].description }}</p>
+    <span class="question-option" v-for="y in questions[step].options" :key="y" >{{ y }}<input v-bind:name=step type="radio" v-bind:value=y v-model="answers"></span>
     </div>
     <div class="question-meta-footer">
-        <span id="quit-quiz-option">Quit quiz</span> <span id="next-question-option"><button>Next</button></span>
+        <span id="quit-quiz-option"><router-link to="/quiz">Quit quiz</router-link></span> <span id="next-question-option"><button v-on:click="nextQuestion()">Next</button></span>
   </div>
   </div>
+  <div>
+    <b-button v-b-modal.modal-1></b-button>
+    <b-modal id="modal-1" title="Submit score">
+    <p class="my-4"></p>You scored: <b>{{score}}</b> <br> You finished the quiz in: <b>{{timer}}</b> seconds<br>
+    <input id="modal-username" type="text" placeholder="Enter username to show up in leaderboard">
+    </b-modal>
+</div>
   </div>
 </template>
 
@@ -24,12 +31,48 @@ export default {
     return {
       message: 'none',
       quizId: this.$route.params.id,
-      step: 1,
+      step: 0,
+      answers: null,
       questions: [],
-      quiz: {}
+      quiz: {},
+      countInterval: null,
+      timer: 0,
+      score: 0
     }
   },
+
+  methods: {
+    startTimer() {
+      this.countInterval = setInterval(() => {
+        this.timer += 1
+      }, 1000)
+    },
+    nextQuestion() {
+      if (this.step === this.questions.length) {
+        fetch('http://localhost:3000/api/scores', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            value: this.score,
+            quiz_id: '615596d05e4caa49a8bcacb2',
+            user_id: '614468682d4ffc4bd4ceb885'
+          })
+        })
+      } else {
+        if (this.questions[this.step].answer === this.answers) {
+          this.score += this.questions[this.step].score
+        }
+        this.step++
+        console.log(this.score)
+      }
+    }
+  },
+
   mounted() {
+    this.startTimer()
     fetch(`http://localhost:3000/api/quizes/${this.quizId}/questions`, {
       method: 'GET',
       headers: {
@@ -137,9 +180,10 @@ export default {
   margin: auto;
 }
 
-#quit-quiz-option {
+#quit-quiz-option a {
   float: left;
   font-weight: 600;
+  color: black;
 }
 
 #next-question-option {
@@ -153,6 +197,13 @@ export default {
   border: none;
   padding: 5px 25px 5px 25px;
   border-radius: 10px;
+}
+
+#modal-username {
+  padding: 8px 10px 8px 10px;
+  width: 400px;
+  border-radius: 5px;
+  border: 1px solid gray;
 }
 
 </style>
