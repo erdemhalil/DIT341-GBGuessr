@@ -30,6 +30,7 @@
   padding-left: 100px;
   position: sticky;
   z-index: 99;
+  top: 0;
 }
 
 #nav a{
@@ -45,13 +46,6 @@
 
 .nav-links {
   float: right;
-}
-
-#sign-up {
-  background: #369093;
-  padding: 8px 20px 8px 20px!important;
-  border-radius: 50px;
-  margin: 4px 10px 0px 0px;
 }
 
 </style>
