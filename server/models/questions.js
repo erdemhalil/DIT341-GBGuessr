@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-// Consider adding 'min', 'max' for score
+// Consider adding 'min', 'max' for score, add required true if we don't have any locations
 
 var questionSchema = new Schema({
     quiz_id: { type: Schema.Types.ObjectId, ref: 'quizes', required: true},
@@ -9,7 +9,7 @@ var questionSchema = new Schema({
     type: { type: String},
     description: { type: String, required: true},
     answer: { type: String, required: true},
-    options: [{ type: String, required: true }],
+    options: [{ type: String}],
     score: { type: Number}
 });
 

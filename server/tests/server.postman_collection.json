@@ -594,7 +594,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"category\": \"Large\",\r\n    \"name\": \"The Mega Quiz\"\r\n}",
+							"raw": "{\r\n    \"category\": \"Large\",\r\n    \"name\": \"The HUGE Quiz\",\r\n    \"image\": \"https://play-lh.googleusercontent.com/CC9gYlJbBCSFq8vKR1f_62oG17-3m7LEQ_GGZSoy_Kk-_uiDwBHX4eVzHkeI3i9Ztg\",\r\n    \"description\": \"This quiz will test your GBG knowledge\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -661,7 +661,7 @@
 									"pm.test(\"response should have valid JSON data\", function() {\r",
 									"    var jsonData=pm.response.json();\r",
 									"    pm.expect(jsonData.category).to.eql('Large');\r",
-									"    pm.expect(jsonData.name).to.eql('The Mega Quiz');\r",
+									"    pm.expect(jsonData.name).to.eql('The HUGE Quiz');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -736,7 +736,7 @@
 									"\r",
 									"pm.test(\"response should have valid JSON data\", function() {\r",
 									"    var jsonData=pm.response.json();\r",
-									"    pm.expect(jsonData.name).to.eql('The Renamed Quiz');\r",
+									"    pm.expect(jsonData.name).to.eql('The Quiz');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -748,7 +748,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"The Renamed Quiz\"\r\n}",
+							"raw": "{\r\n    \"name\": \"The Quiz\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -756,14 +756,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/api/quizes/{{quiz_id}}",
+							"raw": "{{host}}/api/quizes/614468e22d4ffc4bd4ceb894",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
 								"quizes",
-								"{{quiz_id}}"
+								"614468e22d4ffc4bd4ceb894"
 							]
 						}
 					},
@@ -784,6 +784,8 @@
 									"    var jsonData=pm.response.json();\r",
 									"    pm.expect(jsonData.category).to.eql('change');\r",
 									"    pm.expect(jsonData.name).to.eql('Vlad');\r",
+									"    pm.expect(jsonData.image).to.eql('https://d1ymz67w5raq8g.cloudfront.net/Pictures/480xany/6/5/5/509655_shutterstock_1506580442_769367.jpg');\r",
+									"    pm.expect(jsonData.description).to.eql('This quiz won\\'t test anything');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -795,7 +797,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"category\": \"change\",\r\n    \"name\": \"Vlad\"\r\n}",
+							"raw": "{\r\n    \"category\": \"change\",\r\n    \"name\": \"Vlad\",\r\n    \"image\": \"https://d1ymz67w5raq8g.cloudfront.net/Pictures/480xany/6/5/5/509655_shutterstock_1506580442_769367.jpg\",\r\n    \"description\": \"This quiz won't test anything\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1215,7 +1217,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"value\": \"53410\",\r\n    \"rank\": \"2\"\r\n}",
+							"raw": "{\r\n    \"value\": \"9312384\",\r\n    \"quiz_id\": \"{{quiz_id}}\",\r\n    \"user_id\": \"{{user_id}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1255,13 +1257,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/api/questions/",
+							"raw": "{{host}}/api/scores/",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"questions",
+								"scores",
 								""
 							]
 						}
@@ -1295,6 +1297,39 @@
 								"api",
 								"scores",
 								"{{score_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get All Scores for a Quiz By ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/scores/quizes/{{quiz_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"scores",
+								"quizes",
+								"{{quiz_id}}"
 							]
 						}
 					},
@@ -1360,7 +1395,7 @@
 									"pm.test(\"response should have valid JSON data\", function() {\r",
 									"    var jsonData=pm.response.json();\r",
 									"    pm.expect(jsonData.value).to.eql(150);\r",
-									"    pm.expect(jsonData.rank).to.eql(12);\r",
+									"    pm.expect(jsonData.user_id).to.eql(pm.globals.get('user_id'));\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1372,7 +1407,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"value\": \"150\",\r\n    \"rank\": \"12\"\r\n}",
+							"raw": "{\r\n    \"value\": \"150\",\r\n    \"user_id\": \"{{user_id}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
