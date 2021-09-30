@@ -4,11 +4,12 @@
     <b-jumbotron header="Quiz" lead=""/>
 
     <div class="quiz-container row justify-content-center">
-        <div v-for="i in 3" :key="i" class="quiz col-3">
-            <h3>Bar quiz</h3>
+        <div v-for="i in quizes" :key="i" class="quiz col-3">
+            <h3>{{i.name}}</h3>
         <img src="https://i.pcmag.com/imagery/reviews/03aizylUVApdyLAIku1AvRV-39.1605559903.fit_scale.size_760x427.png" alt="">
+        <h6>{{i.category}}</h6>
         <p>this quiz features a bunch of fun trivia questions, and the most famous bar locations</p>
-        <router-link to="/">Play</router-link>
+        <router-link :to="{path: '/quiz/' + i._id}">Play</router-link>
         </div>
     </div>
   </div>
@@ -20,10 +21,32 @@ export default {
   name: 'quiz',
   data() {
     return {
-      message: 'none'
+      message: 'none',
+      quizes: []
     }
+  },
+  mounted() {
+    this.url_data = this.$route.params.id
+    fetch('http://localhost:3000/api/quizes/', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        data.forEach(element => {
+          this.quizes.push(element)
+        })
+        console.log(this.quizes)
+      })
+      .catch((error) => {
+        console.error('Error:', error)
+      })
   }
 }
+
 </script>
 
 <style>
