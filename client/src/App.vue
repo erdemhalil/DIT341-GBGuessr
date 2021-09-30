@@ -5,10 +5,6 @@
       <router-link to="/quiz">Quiz</router-link>
       <router-link to="/Leaderboard">Leaderboard</router-link>
       <router-link to="/quiz/0">Take quiz (add id in url)</router-link>
-      <div class="nav-links">
-          <router-link to="/" id="sign-up">SIGN UP</router-link>
-          <router-link to="/">LOG IN</router-link>
-      </div>
     </div>
     <!-- Render the content of the current page view -->
     <router-view/>
@@ -31,6 +27,7 @@
   padding-left: 100px;
   position: sticky;
   z-index: 99;
+  top: 0;
 }
 
 #nav a{
@@ -46,13 +43,6 @@
 
 .nav-links {
   float: right;
-}
-
-#sign-up {
-  background: #369093;
-  padding: 8px 20px 8px 20px!important;
-  border-radius: 50px;
-  margin: 4px 10px 0px 0px;
 }
 
 </style>
