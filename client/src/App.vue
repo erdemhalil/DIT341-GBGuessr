@@ -3,7 +3,7 @@
     <div id="nav">
       <router-link to="/">Home</router-link>
       <router-link to="/quiz">Quiz</router-link>
-      <router-link to="/Leaderboard">Leaderboard</router-link>
+      <router-link to="/leaderboard">Leaderboard</router-link>
       <router-link to="/quiz/0">Take quiz (add id in url)</router-link>
       <div class="nav-links">
           <router-link to="/" id="sign-up">SIGN UP</router-link>
