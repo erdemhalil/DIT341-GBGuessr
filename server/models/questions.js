@@ -9,6 +9,7 @@ var questionSchema = new Schema({
     type: { type: String},
     description: { type: String, required: true},
     answer: { type: String, required: true},
+    options: [{ type: String, required: true }],
     score: { type: Number}
 });
 
