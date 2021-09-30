@@ -5,7 +5,6 @@ var Schema = mongoose.Schema;
 
 var scoreSchema = new Schema({
     value: { type: Number, required: true},
-    rank: { type: Number},
     quiz_id: {type: Schema.Types.ObjectId, ref: 'quizes'},
     user_id: { type: Schema.Types.ObjectId, ref: 'users'},
     created_on: { type: Date, default: Date.now}

@@ -41,7 +41,7 @@ router.put('/:id', function (req, res, next){
           return res.status(404).json({"message": "Score not found"});
       }
       scores.value = req.body.value;
-      scores.rank = req.body.rank;
+      scores.user_id = req.body.user_id
       scores.save();
       res.status(200).json(scores);
   });
@@ -55,7 +55,7 @@ router.patch('/:id', function (req, res, next){
           return res.status(404).json({"message": "Score not found"});
       }
       scores.value = (req.body.value || scores.value);
-      scores.rank = (req.body.rank || scores.rank);
+      scores.user_id = (req.body.user_id || scores.user_id)
       scores.save();
       res.status(200).json(scores);
   });

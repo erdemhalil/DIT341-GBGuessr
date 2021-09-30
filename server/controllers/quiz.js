@@ -65,6 +65,8 @@ router.put('/:id', function (req, res, next){
       }
       quiz.category = req.body.category;
       quiz.name = req.body.name;
+      quiz.image = req.body.image;
+      quiz.description = req.body.description;
       quiz.save();
       res.status(200).json(quiz);
   });
@@ -79,6 +81,8 @@ router.patch('/:id', function (req, res, next){
       }
       quiz.category = (req.body.category || quiz.category);
       quiz.name = (req.body.name || quiz.name);
+      quiz.image = (req.body.image || quiz.image);
+      quiz.description = (req.body.description || quiz.description);
       quiz.save();
       res.status(200).json(quiz);
   });

@@ -58,6 +58,7 @@ router.put('/:id', function (req, res, next){
       question.location_id = req.body.location_id;
       question.description = req.body.description;
       question.answer = req.body.answer;
+      question.options = req.body.options;
       question.score = req.body.score;
       question.save();
       res.status(200).json(question);
@@ -75,6 +76,7 @@ router.patch('/:id', function (req, res, next){
       question.location_id = (req.body.location_id || question.location_id);
       question.description = (req.body.description || question.description);
       question.answer = (req.body.answer || question.answer);
+      question.options = (req.body.options || question.options);
       question.score = (req.body.score || question.score);
 
       question.save();
