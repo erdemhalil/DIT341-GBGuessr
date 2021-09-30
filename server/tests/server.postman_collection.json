@@ -756,14 +756,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/api/quizes/614468e22d4ffc4bd4ceb894",
+							"raw": "{{host}}/api/quizes/{{quiz_id}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
 								"quizes",
-								"614468e22d4ffc4bd4ceb894"
+								"{{quiz_id}}"
 							]
 						}
 					},
@@ -911,7 +911,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"quiz_id\": \"{{quiz_id}}\",\r\n    \"type\": \"True OR False\",\r\n    \"description\": \"What happened here?\",\r\n    \"answer\": \"Nothing\",\r\n    \"score\": \"100\"\r\n}",
+							"raw": "{\r\n    \"quiz_id\": \"{{quiz_id}}\",\r\n    \"type\": \"True OR False\",\r\n    \"description\": \"What happened here?\",\r\n    \"answer\": \"Nothing\",\r\n    \"options\": [\"Not the answer\", \"Definitely not the answer lol\", \"The tricky one but not there yet\"],\r\n    \"score\": \"100\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1090,6 +1090,7 @@
 									"    pm.expect(jsonData.type).to.eql('Prompt');\r",
 									"    pm.expect(jsonData.description).to.eql('What happened here, again?');\r",
 									"    pm.expect(jsonData.answer).to.eql('Nothing again');\r",
+									"    pm.expect(jsonData.options.length).to.eql(3);\r",
 									"    pm.expect(jsonData.score).to.eql(150);\r",
 									"});"
 								],
@@ -1102,7 +1103,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"type\": \"Prompt\",\r\n    \"description\": \"What happened here, again?\",\r\n    \"answer\": \"Nothing again\",\r\n    \"score\": \"150\"\r\n}",
+							"raw": "{\r\n    \"type\": \"Prompt\",\r\n    \"description\": \"What happened here, again?\",\r\n    \"answer\": \"Nothing again\",\r\n    \"options\": [\"Change 1\", \"Change 2\", \"Change 3\"],\r\n    \"score\": \"150\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
