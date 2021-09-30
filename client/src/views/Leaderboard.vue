@@ -25,12 +25,13 @@ export default {
       scores: [],
       fields: [
         {
-          key: 'value',
-          label: 'Score',
+          key: 'username',
+          label: 'Name',
           sortable: true
         },
         {
-          key: 'rank',
+          key: 'value',
+          label: 'Score',
           sortable: true
         },
         {
@@ -50,7 +51,6 @@ export default {
       .then((response) => response.json())
       .then((data) => {
         this.quizes = data
-        console.log(this.quizes)
       })
       .catch((error) => {
         console.error('Error:', error)
@@ -59,7 +59,6 @@ export default {
   methods: {
     requestScore(e) {
       const index = this.quizes.findIndex((item) => item.name === e)
-      console.log(index)
       fetch(
         `http://localhost:3000/api/scores/quizes/${this.quizes[index]._id}`,
         {
@@ -71,7 +70,13 @@ export default {
       )
         .then((response) => response.json())
         .then((data) => {
-          this.scores = data
+          this.scores = []
+          data.forEach(element => {
+            this.scores.push(element)
+            this.scores.forEach(score => {
+              score.created_on = score.created_on.slice(0, 10) + ' ' + score.created_on.slice(11, 19)
+            })
+          })
           console.log(this.scores)
         })
         .catch((error) => {

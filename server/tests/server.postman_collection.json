@@ -1218,7 +1218,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"value\": \"9312384\",\r\n    \"quiz_id\": \"{{quiz_id}}\",\r\n    \"user_id\": \"{{user_id}}\"\r\n}",
+							"raw": "{\r\n    \"value\": \"9312384\",\r\n    \"quiz_id\": \"{{quiz_id}}\",\r\n    \"username\": \"Test\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1396,7 +1396,7 @@
 									"pm.test(\"response should have valid JSON data\", function() {\r",
 									"    var jsonData=pm.response.json();\r",
 									"    pm.expect(jsonData.value).to.eql(150);\r",
-									"    pm.expect(jsonData.user_id).to.eql(pm.globals.get('user_id'));\r",
+									"    pm.expect(jsonData.username).to.eql('Changed User');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1408,7 +1408,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"value\": \"150\",\r\n    \"user_id\": \"{{user_id}}\"\r\n}",
+							"raw": "{\r\n    \"value\": \"150\",\r\n    \"username\": \"Changed User\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
