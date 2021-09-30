@@ -1,21 +1,21 @@
 <template>
   <div class="background">
     <img id = "bannerImage" src="https://i.imgur.com/qA90xIX.png" alt="GBGuesser Banner">
+    <div class="aboutContainer">
     <div class="about">
       <h3 style="text-align:center;">ABOUT</h3>
       <p>Gothenburg Guesser, or GBGuesser, is a quizgame about geography, history and culture surrounding the swedish city Gothenburg!
-        <br>
-        Check it out!
       </p>
       <h3 style="text-align:center;">CREDITS</h3>
       <p style="text-align:center;">
-        <br>Enis Bourbia
-        <br>Erdem Halil
+        Enis Bourbia
         <br>Edvin Danielsson
+        <br>Erdem Halil
       </p>
+      <div id="playButton">
+        <router-link to="/quiz"><b>TO QUIZES</b></router-link>
+        </div>
     </div>
-    <div class="randomQuiz">
-      <p> bruh</p>
     </div>
   </div>
 </template>
@@ -63,24 +63,25 @@ export default {
         border-radius: 25px;
         border-width: 50px;
         width: 500px;
-        margin:25px auto 10px auto;
+        margin:35px auto 10px auto;
+        display: inline-block;
     }
-.randomQuiz
- {
-        text-align: left;
-        background-color: #E0F5F5;
-        border-radius: 25px;
-        border-width: 50px;
-        width: 500px;
-        margin:25px auto 10px auto;
-    }
-.quiz
-{
-       position: relative;
-       max-width: 300px;
-        height: 400px;
-        background-color: #E0F5F5;
-        border-radius: 25px;
-        margin: 50px;
-    }
+.about p {
+  margin: 3px 30px 3px 30px;
+}
+
+.about h3 {
+  margin: 10px auto 20px auto;
+}
+#playButton {
+  background: #369093;
+  padding: 8px 20px 8px 20px;
+  border-radius: 50px;
+  margin: auto auto 4% auto;
+  width: 180px;
+  text-align: center;
+}
+#playButton a{
+ color: #E0F5F5;
+}
 </style>
