@@ -10,14 +10,13 @@
     <span class="question-option" v-for="y in questions[step].options" :key="y" >{{ y }}<input v-bind:name=step type="radio" v-bind:value=y v-model="answers"></span>
     </div>
     <div class="question-meta-footer">
-        <span id="quit-quiz-option"><router-link to="/quiz">Quit quiz</router-link></span> <span id="next-question-option"><button v-on:click="nextQuestion()">Next</button></span>
+        <span id="quit-quiz-option"><router-link to="/quiz">Quit quiz</router-link></span> <span id="next-question-option"><button v-on:click="nextQuestion()" v-if="step+1 !== this.questions.length">Next</button><button v-else  v-on:click="nextQuestion()" v-b-modal.modal-1>Submit</button></span>
   </div>
   </div>
   <div>
-    <b-button v-b-modal.modal-1></b-button>
-    <b-modal id="modal-1" title="Submit score">
+    <b-modal id="modal-1" title="Submit score" @ok="submitQuiz()">
     <p class="my-4"></p>You scored: <b>{{score}}</b> <br> You finished the quiz in: <b>{{timer}}</b> seconds<br>
-    <input id="modal-username" type="text" placeholder="Enter username to show up in leaderboard">
+    <input id="modal-username" type="text" placeholder="Enter username to show up in leaderboard" v-model="username">
     </b-modal>
 </div>
   </div>
@@ -37,7 +36,9 @@ export default {
       quiz: {},
       countInterval: null,
       timer: 0,
-      score: 0
+      score: 0,
+      username: '',
+      quiz_finished: false
     }
   },
 
@@ -48,26 +49,24 @@ export default {
       }, 1000)
     },
     nextQuestion() {
-      if (this.step === this.questions.length) {
-        fetch('http://localhost:3000/api/scores', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            value: this.score,
-            quiz_id: '615596d05e4caa49a8bcacb2',
-            user_id: '614468682d4ffc4bd4ceb885'
-          })
-        })
-      } else {
-        if (this.questions[this.step].answer === this.answers) {
-          this.score += this.questions[this.step].score
-        }
-        this.step++
-        console.log(this.score)
+      if (this.questions[this.step].answer === this.answers) {
+        this.score += this.questions[this.step].score
       }
+      this.step++
+    },
+    submitQuiz() {
+      fetch('http://localhost:3000/api/scores', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          value: this.score,
+          username: this.username,
+          quiz_id: this.quiz._id
+        })
+      })
     }
   },
 
