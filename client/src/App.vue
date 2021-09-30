@@ -4,7 +4,10 @@
       <router-link to="/">Home</router-link>
       <router-link to="/quiz">Quiz</router-link>
       <router-link to="/leaderboard">Leaderboard</router-link>
-      <router-link to="/quiz/0">Take quiz (add id in url)</router-link>
+      <div class="nav-links">
+          <router-link to="/" id="sign-up">SIGN UP</router-link>
+          <router-link to="/">LOG IN</router-link>
+      </div>
     </div>
     <!-- Render the content of the current page view -->
     <router-view/>
