@@ -29,7 +29,8 @@ export default new Router({
     {
       path: '/quiz/:id',
       name: 'take_quiz',
-      component: TakeQuiz
+      component: TakeQuiz,
+      props: true
     }
   ]
 })
