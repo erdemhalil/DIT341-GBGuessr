@@ -5,8 +5,7 @@
       <router-link to="/quiz">Quiz</router-link>
       <router-link to="/leaderboard">Leaderboard</router-link>
       <div class="nav-links">
-          <router-link to="/" id="sign-up">SIGN UP</router-link>
-          <router-link to="/">LOG IN</router-link>
+          <router-link to="/admin" id="sign-up">ADMIN</router-link>
       </div>
     </div>
     <!-- Render the content of the current page view -->
