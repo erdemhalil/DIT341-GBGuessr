@@ -35,7 +35,6 @@
 #nav {
   min-width: 100%;
   background:linear-gradient(45deg, #369093, #b3b3b3);
-  height: 50px;
   padding-left: 100px;
   position: sticky;
   z-index: 99;
