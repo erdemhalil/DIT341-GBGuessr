@@ -47,24 +47,23 @@ export default {
 
 <style>
 #bannerImage {
-  margin-top: -15px;
   width:100%;
   user-select: none;
 }
 
 .background {
+  position: absolute;
+  min-height: 100vh;
   background:linear-gradient(45deg, #369093, #b3b3b3);
 }
 
 .about {
-        position: relative;
         text-align: left;
         background-color: #E0F5F5;
+        padding: 10px;
         border-radius: 25px;
-        border-width: 50px;
-        width: 500px;
+        width: 40vw;
         margin:35px auto 10px auto;
-        display: inline-block;
     }
 .about p {
   margin: 3px 30px 3px 30px;
@@ -84,4 +83,11 @@ export default {
 #playButton a{
  color: #E0F5F5;
 }
+
+@media screen and (max-width: 768px) {
+  .about {
+    width: 80vw;
+  }
+}
+
 </style>
