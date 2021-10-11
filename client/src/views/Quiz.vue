@@ -3,16 +3,20 @@
   <div>
     <b-jumbotron header="Quiz" lead=""/>
 
-    <div class="quiz-container row justify-content-center">
-        <div v-for="i in quizes" :key="i" class="quiz col-3">
+      <b-container>
+        <b-row class="justify-content-center">
+        <b-col class="quiz-columns" v-for="i in quizes" :key="i" lg="4" md="6" sm="12">
+        <div class="quiz">
             <h3>{{i.name}}</h3>
         <img v-bind:src="i.image" alt="">
         <h6>{{i.category}}</h6>
         <p>this quiz features a bunch of fun trivia questions, and the most famous bar locations</p>
         <router-link :to="{path: '/quiz/' + i._id}">Play</router-link>
         </div>
-    </div>
-  </div>
+        </b-col>
+        </b-row>
+      </b-container>
+      </div>
 </template>
 
 <script>
@@ -50,15 +54,15 @@ export default {
 </script>
 
 <style>
-    .quiz-container {
-    }
 
+    .quiz-columns {
+      padding: 10px;
+    }
     .quiz {
-        max-width: 300px;
-        height: 400px;
+        min-height: 450px;
         background-color: #E0F5F5;
         border-radius: 25px;
-        margin: 50px;
+        padding: 10px;
     }
 
     .quiz h3 {
