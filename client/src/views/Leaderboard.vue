@@ -1,6 +1,8 @@
 <template>
   <div>
-    <b-jumbotron header="Leaderboards" lead="" />
+    <h1>Leaderboard</h1>
+    <b-row class="justify-content-center" id="leaderboard-row">
+    <b-col class="" v-for="i in quizes" :key="i" lg="8" md="10" sm="12">
     <b-form-input
       list="my-list-id"
       v-on:change="(e) => requestScore(e)"
@@ -8,10 +10,12 @@
 
     <datalist id="my-list-id">
       <option v-for="quiz in quizes" :key="quiz._id">{{ quiz.name }}</option>
-    </datalist>
+    </datalist><br/>
     <div>
       <b-table striped hover :items="scores" :fields="fields"></b-table>
     </div>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
@@ -86,6 +90,16 @@ export default {
   }
 }
 </script>
-
 <style>
+h1 {
+  padding: 20px;
+}
+
+#leaderboard-row {
+  min-width: 100%;
+}
+
+#leaderboard-header {
+  font-size: 22px!important;
+}
 </style>

@@ -1,24 +1,30 @@
 <template>
   <div>
-    <b-jumbotron header="Take quiz" lead=""/>
   <div class="question-container">
-    <div class="meta-data-header"><span id="quiz-meta-name">{{quiz.name}}</span> <span id="quiz-meta-timer">{{ timer }} Seconds</span>
+  <b-row class="justify-content-center">
+  <b-col cols lg="6">
     <div class="question-step-info-container"><span id="question-step-header">Question</span> <span id="current-step">{{step + 1}}</span><span id="total-quiz-length">/{{ questions.length }}</span></div>
+  </b-col>
+  <b-col cols lg="6">
+        <div class="meta-data-header"><span id="quiz-meta-name">{{quiz.name}}</span><br/> <span id="quiz-meta-timer">{{ timer }} Seconds</span></div>
+  </b-col>
+  </b-row>
+    <b-row class="justify-content-center">
+      <b-col col lg="8" md="8" sm="12">
+            <p id="question-description">{{ questions[step].description }}</p>
+            <span class="question-option" v-for="y in questions[step].options" :key="y" >{{ y }}<input v-bind:name=step type="radio" v-bind:value=y v-model="answers"></span>
+      </b-col>
+    </b-row>
+        <div class="question-meta-footer">
+            <span id="quit-quiz-option"><router-link to="/quiz">Quit quiz</router-link></span> <span id="next-question-option"><button v-on:click="nextQuestion()" v-if="step+1 !== this.questions.length">Next</button><button v-else  v-on:click="nextQuestion()" v-b-modal.modal-1>Submit</button></span>
+      </div>
+      </div>
+      <div>
+        <b-modal id="modal-1" title="Submit score" @ok="submitQuiz()">
+        <p class="my-4"></p>You scored: <b>{{score}}</b> <br> You finished the quiz in: <b>{{timer}}</b> seconds<br>
+        <input id="modal-username" type="text" placeholder="Enter username to show up in leaderboard" v-model="username">
+        </b-modal>
     </div>
-    <div class="answer-table">
-    <p>{{ questions[step].description }}</p>
-    <span class="question-option" v-for="y in questions[step].options" :key="y" >{{ y }}<input v-bind:name=step type="radio" v-bind:value=y v-model="answers"></span>
-    </div>
-    <div class="question-meta-footer">
-        <span id="quit-quiz-option"><router-link to="/quiz">Quit quiz</router-link></span> <span id="next-question-option"><button v-on:click="nextQuestion()" v-if="step+1 !== this.questions.length">Next</button><button v-else  v-on:click="nextQuestion()" v-b-modal.modal-1>Submit</button></span>
-  </div>
-  </div>
-  <div>
-    <b-modal id="modal-1" title="Submit score" @ok="submitQuiz()">
-    <p class="my-4"></p>You scored: <b>{{score}}</b> <br> You finished the quiz in: <b>{{timer}}</b> seconds<br>
-    <input id="modal-username" type="text" placeholder="Enter username to show up in leaderboard" v-model="username">
-    </b-modal>
-</div>
   </div>
 </template>
 
@@ -107,8 +113,7 @@ export default {
 <style>
 
 .question-container {
-  width: 80%;
-  margin: auto;
+  padding-top: 100px;
 }
 
 .meta-data-header {
@@ -119,25 +124,24 @@ export default {
   color: #9c9c9c;
   font-size: 18px;
   font-weight: 900;
-  float: left;
 }
 
 #quiz-meta-timer {
   color: #9c9c9c;
   font-size: 18px;
   font-weight: 900;
-  float: right;
 }
 
 .question-step-info-container {
-  max-width: 200px;
-  display: inline-block;
-  float: left;
-  clear: left;
 }
 
 #current-step {
   font-size: 28px;
+  font-weight: 900;
+}
+
+#question-description {
+  font-size: 25px;
   font-weight: 900;
 }
 
@@ -162,25 +166,37 @@ export default {
   border-radius: 25px;
   padding: 10px;
   margin: 10px;
+}
 
+@media screen and (max-width: 768px) {
+  .question-option {
+    width: 90vw;
+  }
 }
 
 .question-option input {
   float: right;
   position: relative;
   top: 5px;
-   width: 25px;
+  width: 25px;
   height: 1em;
 }
 
 .question-meta-footer {
-  width: 500px;
   padding: 50px 0px 50px 0px;
+  width: 500px;
   margin: auto;
+}
+
+@media screen and (max-width: 768px) {
+.question-meta-footer {
+  width: 95vw;
+}
 }
 
 #quit-quiz-option a {
   float: left;
+  margin-left: 10px;
   font-weight: 600;
   color: black;
 }
