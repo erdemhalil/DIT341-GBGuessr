@@ -779,7 +779,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"quiz_id\": \"{{quiz_id}}\",\r\n    \"type\": \"True OR False\",\r\n    \"description\": \"What happened here?\",\r\n    \"answer\": \"Nothing\",\r\n    \"options\": [\"Not the answer\", \"Definitely not the answer lol\", \"The tricky one but not there yet\"],\r\n    \"score\": \"100\"\r\n}",
+							"raw": "{\r\n    \"quiz_id\": \"{{quiz_id}}\",\r\n    \"type\": \"True OR False\",\r\n    \"description\": \"What happened here?\",\r\n    \"answer\": \"Nothing\",\r\n    \"options\": [\"Not the answer\", \"Definitely not the answer lol\", \"The tricky one but not there yet\", \"Nothing\"],\r\n    \"score\": \"100\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -822,7 +822,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"quiz_id\": \"{{quiz_id}}\",\r\n    \"type\": \"You are not my type\",\r\n    \"description\": \"What is the most famous spot to hangout in Gothenburg?\",\r\n    \"answer\": \"Definitely not Hisingen lol\",\r\n    \"options\": [\"Liseberg\", \"Jarntorget\", \"Nordstan\"],\r\n    \"score\": \"1000\"\r\n}",
+							"raw": "{\r\n    \"quiz_id\": \"{{quiz_id}}\",\r\n    \"type\": \"You are not my type\",\r\n    \"description\": \"What is the most famous spot to hangout in Gothenburg?\",\r\n    \"answer\": \"Definitely not Hisingen lol\",\r\n    \"options\": [\"Liseberg\", \"Jarntorget\", \"Nordstan\", \"Definitely not Hisingen lol\"],\r\n    \"score\": \"1000\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

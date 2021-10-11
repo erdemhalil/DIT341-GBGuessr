@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import { Api } from '@/Api'
+
 export default {
   name: 'leaderboard',
   data() {
@@ -46,15 +48,9 @@ export default {
     }
   },
   mounted() {
-    fetch('http://localhost:3000/api/quizes/', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        this.quizes = data
+    Api.get('/quizes')
+      .then(response => {
+        this.quizes = response.data
       })
       .catch((error) => {
         console.error('Error:', error)
@@ -63,19 +59,10 @@ export default {
   methods: {
     requestScore(e) {
       const index = this.quizes.findIndex((item) => item.name === e)
-      fetch(
-        `http://localhost:3000/api/scores/quizes/${this.quizes[index]._id}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      )
-        .then((response) => response.json())
-        .then((data) => {
+      Api.get(`/scores/quizes/${this.quizes[index]._id}`)
+        .then(response => {
           this.scores = []
-          data.forEach(element => {
+          response.data.forEach(element => {
             this.scores.push(element)
             this.scores.forEach(score => {
               score.created_on = score.created_on.slice(0, 10) + ' ' + score.created_on.slice(11, 19)

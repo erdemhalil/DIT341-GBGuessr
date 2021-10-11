@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { Api } from '@/Api'
 
 export default {
   name: 'leaderboard',
@@ -61,46 +62,31 @@ export default {
       this.step++
     },
     submitQuiz() {
-      fetch('http://localhost:3000/api/scores', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
+      Api.post('/scores',
+        {
           value: this.score,
           username: this.username,
           quiz_id: this.quiz._id
         })
-      })
+        .catch((error) => {
+          console.error('Error:', error)
+        })
     }
   },
 
   mounted() {
     this.startTimer()
-    fetch(`http://localhost:3000/api/quizes/${this.quizId}/questions`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        this.questions = data.questions
+    Api.get(`quizes/${this.quizId}/questions`)
+      .then(response => {
+        this.questions = response.data.questions
         console.log(this.questions)
       })
       .catch((error) => {
         console.error('Error:', error)
       })
-    fetch(`http://localhost:3000/api/quizes/${this.quizId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        this.quiz = data
+    Api.get(`quizes/${this.quizId}`)
+      .then(response => {
+        this.quiz = response.data
         console.log(this.quiz)
       })
       .catch((error) => {

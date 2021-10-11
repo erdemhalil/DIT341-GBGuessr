@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { Api } from '@/Api'
 
 export default {
   name: 'quiz',
@@ -31,16 +32,10 @@ export default {
   },
   mounted() {
     this.url_data = this.$route.params.id
-    fetch('http://localhost:3000/api/quizes/', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data)
-        data.forEach(element => {
+    Api.get('/quizes')
+      .then(response => {
+        console.log(response.data)
+        response.data.forEach(element => {
           this.quizes.push(element)
         })
         console.log(this.quizes)
