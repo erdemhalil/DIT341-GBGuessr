@@ -46,13 +46,20 @@ export default {
 </script>
 
 <style>
+html {
+    overflow-x: hidden;
+}
+
 #bannerImage {
   width:100%;
+  height: 100%;
   user-select: none;
+  margin-top: 45px;
 }
 
 .background {
   position: absolute;
+  min-width: 100vw;
   min-height: 100vh;
   background:linear-gradient(45deg, #369093, #b3b3b3);
 }
@@ -82,6 +89,12 @@ export default {
 }
 #playButton a{
  color: #E0F5F5;
+}
+
+@media screen and (max-width: 992px) {
+#bannerImage {
+  margin-top: 50px;
+}
 }
 
 @media screen and (max-width: 768px) {
