@@ -1,32 +1,38 @@
 <template>
   <div class="passwordDescription">
-    <p>
-      <br />
-      Welcome to the secret page!
-      <br />
-      Please enter the very secret password.
-    </p>
-    <input type="password" id="inputPass" />
-    <button id= "submitButton" v-on:click="submitPassword()">Submit</button>
+    <b-form @submit="onSubmit">
+      <b-form-group>
+        <b-form-input
+          list="my-list-id"
+          id="passwordInput"
+          type="password"
+          placeholder="Type in the secret password..."
+          v-model="form.password"
+        ></b-form-input>
+      </b-form-group>
+      <b-button type="submit" variant="primary">Submit</b-button>
+    </b-form>
   </div>
 </template>
-
 <script>
 export default {
   name: 'admin',
   data() {
     return {
-      message: 'none'
+      message: 'none',
+      form: {
+        password: ''
+      }
     }
   },
   methods: {
-    submitPassword() {
-      const inputValue = document.getElementById('inputPass').value
-      console.log(inputValue)
-      if (inputValue === 'bruh') {
-        console.log('very nice')
-      } else {
-        console.log('frick')
+    onSubmit(event) {
+      event.preventDefault()
+      console.log(JSON.stringify(this.form))
+      console.log(this.$session.get('password'))
+      this.$session.set('password', this.form.password)
+      if (this.$session.get('password') === 'bruh') {
+        this.$router.push('/admin/protected')
       }
     }
   }
@@ -34,7 +40,7 @@ export default {
 </script>
 <style>
 .passwordDescription {
-  text-align: left;
-  margin: auto auto auto 50%;
+  text-align: center;
+  margin: auto auto auto 25%;
 }
 </style>
