@@ -14,6 +14,11 @@
 </template>
 
 <style>
+
+* {
+  transition: 100ms;
+}
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -25,21 +30,19 @@
 #nav {
   min-width: 100%;
   background:linear-gradient(45deg, #369093, #b3b3b3);
-  height: 50px;
   padding-left: 100px;
   position: sticky;
   z-index: 99;
   top: 0;
 }
 
-#nav a{
-  padding: 15px 20px 20px 0px;
+.nav-link a {
   color: #FFF;
   font-weight: 700;
   float: left;
 }
 
-#nav a:hover {
+.nav-link a:hover {
   text-decoration: none;
 }
 
