@@ -25,12 +25,18 @@ export default {
       }
     }
   },
+  mounted() {
+    this.validatePassword()
+  },
   methods: {
     onSubmit(event) {
       event.preventDefault()
       console.log(JSON.stringify(this.form))
       console.log(this.$session.get('password'))
       this.$session.set('password', this.form.password)
+      this.validatePassword()
+    },
+    validatePassword() {
       if (this.$session.get('password') === 'bruh') {
         this.$router.push('/admin/protected')
       }
