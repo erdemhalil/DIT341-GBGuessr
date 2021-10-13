@@ -498,73 +498,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "delete Location",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"response is CREATED\", function() {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/locations/{{location_id}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"locations",
-								"{{location_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete all Locations",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// Expect 404 because the only created location is already deleted in the previous test\r",
-									"\r",
-									"pm.test(\"response is CREATED\", function() {\r",
-									"    pm.response.to.have.status(404);\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/locations/",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"locations",
-								""
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
@@ -817,71 +750,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "delete Quiz",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"response is CREATED\", function() {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/quizes/{{quiz_id}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"quizes",
-								"{{quiz_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete all Quizes",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// Expect 404 because the only created location is already deleted in the previous test\r",
-									"\r",
-									"pm.test(\"response is CREATED\", function() {\r",
-									"    pm.response.to.have.status(404);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/quizes",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"quizes"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
@@ -911,7 +779,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"quiz_id\": \"{{quiz_id}}\",\r\n    \"type\": \"True OR False\",\r\n    \"description\": \"What happened here?\",\r\n    \"answer\": \"Nothing\",\r\n    \"options\": [\"Not the answer\", \"Definitely not the answer lol\", \"The tricky one but not there yet\"],\r\n    \"score\": \"100\"\r\n}",
+							"raw": "{\r\n    \"quiz_id\": \"{{quiz_id}}\",\r\n    \"type\": \"True OR False\",\r\n    \"description\": \"What happened here?\",\r\n    \"answer\": \"Nothing\",\r\n    \"options\": [\"Not the answer\", \"Definitely not the answer lol\", \"The tricky one but not there yet\", \"Nothing\"],\r\n    \"score\": \"100\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -925,6 +793,51 @@
 							],
 							"path": [
 								"api",
+								"questions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post a Question in a Particular Quiz",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.globals.set(\"question2_id\", jsonData._id);\r",
+									"\r",
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"quiz_id\": \"{{quiz_id}}\",\r\n    \"type\": \"You are not my type\",\r\n    \"description\": \"What is the most famous spot to hangout in Gothenburg?\",\r\n    \"answer\": \"Definitely not Hisingen lol\",\r\n    \"options\": [\"Liseberg\", \"Jarntorget\", \"Nordstan\", \"Definitely not Hisingen lol\"],\r\n    \"score\": \"1000\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/quizes/{{quiz_id}}/questions",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"quizes",
+								"{{quiz_id}}",
 								"questions"
 							]
 						}
@@ -1029,6 +942,40 @@
 					"response": []
 				},
 				{
+					"name": "get a Particular Question in a Particular Quiz",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/quizes/{{quiz_id}}/questions/{{question_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"quizes",
+								"{{quiz_id}}",
+								"questions",
+								"{{question_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "patch Question",
 					"event": [
 						{
@@ -1119,72 +1066,6 @@
 								"api",
 								"questions",
 								"{{question_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete Question",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"response is CREATED\", function() {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/questions/{{question_id}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"questions",
-								"{{question_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete All Questions",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// Expect 404 because the only created location is already deleted in the previous test\r",
-									"\r",
-									"pm.test(\"response is CREATED\", function() {\r",
-									"    pm.response.to.have.status(404);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/questions/",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"questions",
-								""
 							]
 						}
 					},
@@ -1456,6 +1337,243 @@
 								"api",
 								"scores",
 								"{{score_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DELETES",
+			"item": [
+				{
+					"name": "delete Location",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/locations/{{location_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"locations",
+								"{{location_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete a Particular Question in a Particular Quiz",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/quizes/{{quiz_id}}/questions/{{question2_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"quizes",
+								"{{quiz_id}}",
+								"questions",
+								"{{question2_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete Question",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/questions/{{question_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"questions",
+								"{{question_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete Quiz",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/quizes/{{quiz_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"quizes",
+								"{{quiz_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete All Questions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Expect 404 because the only created location is already deleted in the previous test\r",
+									"\r",
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/questions/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"questions",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete all Locations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Expect 404 because the only created location is already deleted in the previous test\r",
+									"\r",
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/locations/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"locations",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete all Quizes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Expect 404 because the only created location is already deleted in the previous test\r",
+									"\r",
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/quizes",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"quizes"
 							]
 						}
 					},
