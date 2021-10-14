@@ -101,11 +101,11 @@
               size="sm"
               variant="danger"
               v-on:click="deleteQuiz(data.value)"
-              class="mr-2"
+              class="mr-2 responsive-button"
             >
               Delete
             </b-button>
-            <b-button size="sm" v-b-modal.modal-modify-quiz>Modify</b-button>
+            <b-button size="sm" class="responsive-button" v-b-modal.modal-modify-quiz>Modify</b-button>
           </template>
         </b-table>
       </div>
@@ -160,7 +160,7 @@
         list="scores-list"
         v-on:change="(e) => requestScore(e)"
       ></b-form-input>
-      <b-button size="m" class="mr-2"> Clear Leaderboard (W.I.P.) </b-button>
+      <b-button size="m" class="mr-2 responsive-button leaderboard-button"> Clear Leaderboard (W.I.P.) </b-button>
       <datalist id="scores-list">
         <option v-for="quiz in quizes" :key="quiz._id">{{ quiz.name }}</option>
       </datalist>
@@ -263,11 +263,10 @@ export default {
     }
   },
   beforeMount() {
-    console.log(this.$session.get('password'))
-    if (this.$session.get('password') === 'bruh') {
-      console.log('Welcome to the secret admin page!')
+    if (this.$session.get('user')) {
+      console.log(this.$session.get('user'))
     } else {
-      alert('No access for you')
+      alert('Please login to get access')
       this.$router.push('/admin')
     }
   },
@@ -395,4 +394,27 @@ export default {
 .buttons {
   margin: 15% auto auto auto;
 }
+.buttons button {
+  margin: 10px;
+}
+
+.modal-content label {
+  font-size: 17px!important;
+}
+
+@media screen and (max-width: 600px) {
+.modal-content {
+  font-size: 7px;
+}
+
+.responsive-button {
+  padding: 0px!important;
+  font-size: 7px;
+}
+
+.leaderboard-button {
+  margin: 5px;
+}
+}
+
 </style>

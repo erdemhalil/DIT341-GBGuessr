@@ -1,25 +1,33 @@
 <template>
   <div class="passwordDescription">
-    <b-form @submit="onSubmit">
+    <b-form @submit="fetchUsers" id="login-form">
       <b-form-group>
+          <b-form-input
+          id=""
+          type="text"
+          placeholder="Email"
+          v-model="form.email"
+        ></b-form-input>
         <b-form-input
           id="passwordInput"
           type="password"
-          placeholder="Type in the secret password..."
+          placeholder="Password"
           v-model="form.password"
         ></b-form-input>
       </b-form-group>
-      <b-button type="submit" variant="primary">Submit</b-button>
+      <b-button type="button" v-on:click="fetchUsers()" variant="primary">Submit</b-button>
     </b-form>
   </div>
 </template>
 <script>
+import { Api } from '@/Api'
 export default {
+
   name: 'admin',
   data() {
     return {
-      message: 'none',
       form: {
+        email: '',
         password: ''
       }
     }
@@ -28,17 +36,23 @@ export default {
     this.validatePassword()
   },
   methods: {
-    onSubmit(event) {
-      event.preventDefault()
-      console.log(JSON.stringify(this.form))
-      console.log(this.$session.get('password'))
-      this.$session.set('password', this.form.password)
-      this.validatePassword()
-    },
-    validatePassword() {
-      if (this.$session.get('password') === 'bruh') {
-        this.$router.push('/admin/protected')
-      }
+    fetchUsers() {
+      Api.get('/users/')
+        .then(response => {
+          response.data.User.forEach(element => {
+            if (element.email === this.form.email) {
+              if (element.password === this.form.password) {
+                this.$session.set('user', element._id)
+                location.href = '/admin/protected'
+                return element
+              }
+            }
+          })
+          return false
+        })
+        .catch(error => {
+          this.message = error
+        })
     }
   }
 }
@@ -46,6 +60,15 @@ export default {
 <style>
 .passwordDescription {
   text-align: center;
-  margin: 25% auto auto 25%;
 }
+
+#login-form {
+  width: 400px;
+  margin: 200px auto auto auto;
+}
+
+#login-form input {
+  margin: 10px;
+}
+
 </style>

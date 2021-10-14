@@ -10,6 +10,8 @@
         <b-nav-item href="#"><router-link to="/quiz">Quiz</router-link></b-nav-item>
         <b-nav-item href="#"><router-link to="/leaderboard">Leaderboard</router-link></b-nav-item>
         <b-nav-item href="#"><router-link to="/admin">Admin</router-link></b-nav-item>
+        <b-nav-item  v-on:click="logout" href="#" v-if="logoutButton"><router-link to="/admin/protected">Log out</router-link></b-nav-item>
+
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
@@ -18,7 +20,34 @@
     <router-view/>
   </div>
 </template>
+<script>
 
+export default {
+  name: 'quiz',
+  data() {
+    return {
+    }
+  },
+  methods: {
+    logout() {
+      console.log('kjgfdhj')
+      this.$session.remove('user')
+      console.log(this.$session.get('user'))
+      location.href = '/admin'
+    }
+  },
+  computed: {
+    logoutButton: function () {
+      if (this.$session.get('user')) {
+        console.log(this.$session.get('user'))
+        return true
+      }
+      return false
+    }
+  }
+}
+
+</script>
 <style>
 
 * {
@@ -55,5 +84,4 @@
 .nav-links {
   float: right;
 }
-
 </style>

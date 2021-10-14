@@ -61,7 +61,7 @@ export default {
     }
 
     .quiz h3 {
-        padding: 20px 0px 20px 20px;
+        padding: 20px 0px 20px 0px;
     }
 
 .quiz img {
