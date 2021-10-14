@@ -54,8 +54,6 @@ router.put('/:id', function (req, res, next){
       if(question == null){
           return res.status(404).json({"message": "Question not found"});
       }
-      question.type = req.body.type;
-      question.location_id = req.body.location_id;
       question.description = req.body.description;
       question.answer = req.body.answer;
       question.options = req.body.options;
@@ -72,8 +70,6 @@ router.patch('/:id', function (req, res, next){
       if(question == null){
           return res.status(404).json({"message": "Quesiton not found"});
       }
-      question.type = (req.body.type || question.description);
-      question.location_id = (req.body.location_id || question.location_id);
       question.description = (req.body.description || question.description);
       question.answer = (req.body.answer || question.answer);
       question.options = (req.body.options || question.options);

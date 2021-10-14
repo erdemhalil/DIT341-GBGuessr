@@ -22,7 +22,7 @@
       <div>
         <b-modal id="modal-1" title="Submit score" @ok="submitQuiz()">
         <p class="my-4"></p>You scored: <b>{{score}}</b> <br> You finished the quiz in: <b>{{timer}}</b> seconds<br>
-        <input id="modal-username" type="text" placeholder="Enter username to show up in leaderboard" v-model="username">
+        <input id="modal-username" type="text" placeholder="Enter username" v-model="username">
         </b-modal>
     </div>
   </div>
@@ -62,6 +62,9 @@ export default {
       this.step++
     },
     submitQuiz() {
+      if (this.username === '') {
+        this.username = undefined
+      }
       Api.post('/scores',
         {
           value: this.score,
@@ -177,6 +180,9 @@ export default {
 @media screen and (max-width: 768px) {
 .question-meta-footer {
   width: 95vw;
+}
+#modal-username{
+  max-width: 100%;
 }
 }
 

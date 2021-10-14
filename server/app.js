@@ -31,7 +31,6 @@ app.get('/api', function(req, res) {
     res.json({'message': 'Welcome to your DIT341 backend ExpressJS project!'});
 });
 app.use('/api/users', require('./controllers/user'))
-app.use('/api/locations', require('./controllers/location'))
 app.use('/api/quizes', require('./controllers/quiz'))
 app.use('/api/questions', require('./controllers/question'))
 app.use('/api/scores', require('./controllers/score'))

@@ -2,7 +2,6 @@ var express = require('express');
 const Question = require('../models/questions');
 const router = express.Router()
 var Quiz = require('../models/quizes');
-var Location = require('../models/locations');
 
 router.post('/', function (req, res, next) {
   var quizes = new Quiz(req.body);

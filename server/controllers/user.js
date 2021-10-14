@@ -27,13 +27,6 @@ router.post('/', function (req, res, next) {
 });
 })
 
-// router.post('/authenticate', function (req, res) {
-//     User.find({email: req.body.email, password: req.body.password }, function(err, users) {
-//         if(err) {return next(err);}
-//         res.json({user: users})
-//     })
-// }) // JWT Token? for authentication
-
 router.delete('/:id', function (req, res, next){
      var id = req.params.id;
      User.findByIdAndDelete(id, function(err, users){
