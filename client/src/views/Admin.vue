@@ -3,7 +3,6 @@
     <b-form @submit="onSubmit">
       <b-form-group>
         <b-form-input
-          list="my-list-id"
           id="passwordInput"
           type="password"
           placeholder="Type in the secret password..."
@@ -47,6 +46,6 @@ export default {
 <style>
 .passwordDescription {
   text-align: center;
-  margin: auto auto auto 25%;
+  margin: 25% auto auto 25%;
 }
 </style>

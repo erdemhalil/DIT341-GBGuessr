@@ -2,7 +2,7 @@
   <div>
     <h1>Leaderboard</h1>
     <b-row class="justify-content-center" id="leaderboard-row">
-    <b-col class="" v-for="i in quizes" :key="i" lg="8" md="10" sm="12">
+    <b-col class="" :key="i" lg="8" md="10" sm="12">
     <b-form-input
       list="my-list-id"
       v-on:change="(e) => requestScore(e)"

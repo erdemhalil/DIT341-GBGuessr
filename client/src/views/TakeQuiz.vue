@@ -1,29 +1,66 @@
 <template>
   <div>
-  <div class="question-container">
-  <b-row class="justify-content-center">
-  <b-col cols lg="6">
-    <div class="question-step-info-container"><span id="question-step-header">Question</span> <span id="current-step">{{step + 1}}</span><span id="total-quiz-length">/{{ questions.length }}</span></div>
-  </b-col>
-  <b-col cols lg="6">
-        <div class="meta-data-header"><span id="quiz-meta-name">{{quiz.name}}</span><br/> <span id="quiz-meta-timer">{{ timer }} Seconds</span></div>
-  </b-col>
-  </b-row>
-    <b-row class="justify-content-center">
-      <b-col col lg="8" md="8" sm="12">
-            <p id="question-description">{{ questions[step].description }}</p>
-            <span class="question-option" v-for="y in questions[step].options" :key="y" >{{ y }}<input v-bind:name=step type="radio" v-bind:value=y v-model="answers"></span>
-      </b-col>
-    </b-row>
-        <div class="question-meta-footer">
-            <span id="quit-quiz-option"><router-link to="/quiz">Quit quiz</router-link></span> <span id="next-question-option"><button v-on:click="nextQuestion()" v-if="step+1 !== this.questions.length">Next</button><button v-else  v-on:click="nextQuestion()" v-b-modal.modal-1>Submit</button></span>
+    <div class="question-container">
+      <b-row class="justify-content-center">
+        <b-col cols lg="6">
+          <div class="question-step-info-container">
+            <span id="question-step-header">Question</span>
+            <span id="current-step">{{ step + 1 }}</span
+            ><span id="total-quiz-length">/{{ questions.length }}</span>
+          </div>
+        </b-col>
+        <b-col cols lg="6">
+          <div class="meta-data-header">
+            <span id="quiz-meta-name">{{ quiz.name }}</span
+            ><br />
+            <span id="quiz-meta-timer">{{ timer }} Seconds</span>
+          </div>
+        </b-col>
+      </b-row>
+      <b-row class="justify-content-center">
+        <b-col col lg="8" md="8" sm="12">
+          <p id="question-description">{{ questions[step].description }}</p>
+          <span
+            class="question-option"
+            v-for="y in questions[step].options"
+            :key="y"
+            >{{ y
+            }}<input
+              v-bind:name="step"
+              type="radio"
+              v-bind:value="y"
+              v-model="answers"
+          /></span>
+        </b-col>
+      </b-row>
+      <div class="question-meta-footer">
+        <span id="quit-quiz-option"
+          ><router-link to="/quiz">Quit quiz</router-link></span
+        >
+        <span id="next-question-option"
+          ><button
+            v-on:click="nextQuestion()"
+            v-if="step + 1 !== this.questions.length"
+          >
+            Next</button
+          ><button v-else v-on:click="nextQuestion()" v-b-modal.modal-1>
+            Submit
+          </button></span
+        >
       </div>
-      </div>
-      <div>
-        <b-modal id="modal-1" title="Submit score" @ok="submitQuiz()">
-        <p class="my-4"></p>You scored: <b>{{score}}</b> <br> You finished the quiz in: <b>{{timer}}</b> seconds<br>
-        <input id="modal-username" type="text" placeholder="Enter username to show up in leaderboard" v-model="username">
-        </b-modal>
+    </div>
+    <div>
+      <b-modal id="modal-1" title="Submit score" @ok="submitQuiz()">
+        <p class="my-4"></p>
+        You scored: <b>{{ score }}</b> <br />
+        You finished the quiz in: <b>{{ timer }}</b> seconds<br />
+        <input
+          id="modal-username"
+          type="text"
+          placeholder="Enter username to show up in leaderboard"
+          v-model="username"
+        />
+      </b-modal>
     </div>
   </div>
 </template>
@@ -62,22 +99,21 @@ export default {
       this.step++
     },
     submitQuiz() {
-      Api.post('/scores',
-        {
-          value: this.score,
-          username: this.username,
-          quiz_id: this.quiz._id
-        })
-        .catch((error) => {
-          console.error('Error:', error)
-        })
+      Api.post('/scores', {
+        value: this.score,
+        username: this.username,
+        quiz_id: this.quiz._id
+      }).catch((error) => {
+        console.error('Error:', error)
+      })
+      this.$router.push('/quiz')
     }
   },
 
   mounted() {
     this.startTimer()
     Api.get(`quizes/${this.quizId}/questions`)
-      .then(response => {
+      .then((response) => {
         this.questions = response.data.questions
         console.log(this.questions)
       })
@@ -85,7 +121,7 @@ export default {
         console.error('Error:', error)
       })
     Api.get(`quizes/${this.quizId}`)
-      .then(response => {
+      .then((response) => {
         this.quiz = response.data
         console.log(this.quiz)
       })
@@ -97,7 +133,6 @@ export default {
 </script>
 
 <style>
-
 .question-container {
   padding-top: 100px;
 }
@@ -138,8 +173,8 @@ export default {
 }
 
 #question-step-header {
-    font-size: 24px;
-    font-weight: 500;
+  font-size: 24px;
+  font-weight: 500;
 }
 
 .question-option {
@@ -148,7 +183,7 @@ export default {
   width: 500px;
   display: inline-block;
   text-align: left;
-  border: 2px solid #21B0B5;
+  border: 2px solid #21b0b5;
   border-radius: 25px;
   padding: 10px;
   margin: 10px;
@@ -175,9 +210,9 @@ export default {
 }
 
 @media screen and (max-width: 768px) {
-.question-meta-footer {
-  width: 95vw;
-}
+  .question-meta-footer {
+    width: 95vw;
+  }
 }
 
 #quit-quiz-option a {
@@ -193,7 +228,7 @@ export default {
 
 #next-question-option button {
   background: #369093;
-  color: #FFF;
+  color: #fff;
   font-weight: 700;
   border: none;
   padding: 5px 25px 5px 25px;
@@ -206,5 +241,4 @@ export default {
   border-radius: 5px;
   border: 1px solid gray;
 }
-
 </style>

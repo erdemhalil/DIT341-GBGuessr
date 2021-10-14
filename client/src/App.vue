@@ -9,6 +9,7 @@
         <b-nav-item href="#"><router-link to="/">Home</router-link></b-nav-item>
         <b-nav-item href="#"><router-link to="/quiz">Quiz</router-link></b-nav-item>
         <b-nav-item href="#"><router-link to="/leaderboard">Leaderboard</router-link></b-nav-item>
+        <b-nav-item href="#"><router-link to="/admin">Admin</router-link></b-nav-item>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>

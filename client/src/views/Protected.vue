@@ -3,9 +3,11 @@
     <p>
       <b>Welcome to the Admin page!</b>
     </p>
-    <b-button size="lg" v-b-modal.modal-create-quiz>Create Quiz</b-button>
-    <b-button size="lg" v-b-modal.modal-manage-quiz>Manage Quizes</b-button>
-    <b-button size="lg" v-b-modal.modal-manage-score>Manage Scores</b-button>
+    <div class="buttons">
+      <b-button size="lg" v-b-modal.modal-create-quiz>Create Quiz</b-button>
+      <b-button size="lg" v-b-modal.modal-list-quizes>Manage Quizes</b-button>
+      <b-button size="lg" v-b-modal.modal-manage-score>Manage Scores</b-button>
+    </div>
 
     <!-- CREATE QUIZ -->
     <b-modal
@@ -75,7 +77,7 @@
     </b-modal>
     <!-- MANAGE QUIZES -->
     <b-modal
-      id="modal-manage-quiz"
+      id="modal-list-quizes"
       ref="modal"
       title="Manage Quiz"
       size="xl"
@@ -83,6 +85,66 @@
       @hidden="resetModal"
       @ok="handleOk"
     >
+      <datalist id="quizes-list">
+        <option v-for="quiz in quizes" :key="quiz._id">{{ quiz.name }}</option>
+      </datalist>
+      <div>
+        <b-table
+          ref="quiz-table"
+          striped
+          hover
+          :items="quizes"
+          :fields="quizFields"
+        >
+          <template #cell(_id)="data">
+            <b-button
+              size="sm"
+              variant="danger"
+              v-on:click="deleteQuiz(data.value)"
+              class="mr-2"
+            >
+              Delete
+            </b-button>
+            <b-button size="sm" v-b-modal.modal-modify-quiz>Modify</b-button>
+          </template>
+        </b-table>
+      </div>
+      <b-modal
+        id="modal-modify-quiz"
+        ref="modal"
+        title="Modify Quiz"
+        size="lg"
+        @show="resetModal"
+        @hidden="resetModal"
+        @ok="handleOk"
+      >
+        <datalist id="questions-list">
+          <option v-for="question in questions" :key="question._id">
+            {{ question.name }}
+          </option>
+        </datalist>
+        <div>
+          <b-table
+            ref="questions-table"
+            striped
+            hover
+            :items="questions"
+            :fields="questionFields"
+          >
+            <template #cell(_id)="data">
+              <b-button
+                size="sm"
+                variant="danger"
+                v-on:click="deleteQuiz(data.value)"
+                class="mr-2"
+              >
+                Delete
+              </b-button>
+              <b-button size="sm" v-b-modal.modal-modify-quiz v-on:click="requestQuestion(data_value)">Modify</b-button>
+            </template>
+          </b-table>
+        </div>
+      </b-modal>
     </b-modal>
     <!-- MANAGE SCORE -->
     <b-modal
@@ -98,16 +160,19 @@
         list="scores-list"
         v-on:change="(e) => requestScore(e)"
       ></b-form-input>
-      <b-button size="m" @click="deleteScore()" class="mr-2">
-        Clear Leaderboard
-      </b-button>
+      <b-button size="m" class="mr-2"> Clear Leaderboard (W.I.P.) </b-button>
       <datalist id="scores-list">
         <option v-for="quiz in quizes" :key="quiz._id">{{ quiz.name }}</option>
       </datalist>
       <div>
-        <b-table striped hover :items="scores" :fields="fields">
-          <template #cell(delete)>
-            <b-button size="sm" variant="danger" @click="deleteScore()" class="mr-2">
+        <b-table ref="table" striped hover :items="scores" :fields="fields">
+          <template #cell(_id)="data">
+            <b-button
+              size="sm"
+              variant="danger"
+              v-on:click="deleteScore(data.value)"
+              class="mr-2"
+            >
               Delete
             </b-button>
           </template>
@@ -117,13 +182,15 @@
   </div>
 </template>
 <script>
+import { Api } from '@/Api'
 export default {
   name: 'home',
   data() {
     return {
-      message: 'none',
+      message: 'Test!',
       quizes: [],
       scores: [],
+      questions: [],
       fields: [
         {
           key: 'username',
@@ -140,9 +207,48 @@ export default {
           sortable: true
         },
         {
-          key: 'delete',
+          key: '_id',
           label: 'Delete Score',
           sortable: false
+        }
+      ],
+      quizFields: [
+        {
+          key: 'name',
+          label: 'Name',
+          sortable: true
+        },
+        {
+          key: 'description',
+          label: 'Description',
+          sortable: true
+        },
+        {
+          key: 'category',
+          labe: 'Category',
+          sortable: true
+        },
+        {
+          key: '_id',
+          label: 'Actions',
+          sortable: false
+        }
+      ],
+      questionFields: [
+        {
+          key: 'description',
+          label: 'Description',
+          sortable: true
+        },
+        {
+          key: 'answer',
+          label: 'Answer',
+          sortable: true
+        },
+        {
+          key: 'score',
+          labe: 'Score',
+          sortable: true
         }
       ],
       name: '',
@@ -183,19 +289,11 @@ export default {
   methods: {
     requestScore(e) {
       const index = this.quizes.findIndex((item) => item.name === e)
-      fetch(
-        `http://localhost:3000/api/scores/quizes/${this.quizes[index]._id}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          this.scores = []
-          data.forEach((element) => {
+      Api.get(`/scores/quizes/${this.quizes[index]._id}`)
+        .then((response) => {
+          this.scores = [] // resets the score
+          response.data.forEach((element) => {
+            // adds the all score from the Get method
             this.scores.push(element)
             this.scores.forEach((score) => {
               score.created_on =
@@ -210,21 +308,26 @@ export default {
           console.error('Error:', error)
         })
     },
-    requestQuiz(e) {
-      const index = this.chosenQuiz.findIndex((item) => item.name === e)
-      fetch(`http://localhost:3000/api/quizes/${this.quizes[index]._id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data)
-          data.forEach((element) => {
+    requestQuiz() {
+      Api.get(`quizes/${this.quizes}`)
+        .then((response) => {
+          this.quizes = [] // resets the score
+          response.data.forEach((element) => {
             this.quizes.push(element)
           })
-          console.log(this.quizes)
+        })
+        .catch((error) => {
+          console.error('Error:', error)
+        })
+    },
+    requestQuestion(e) {
+      console.log(e)
+      Api.get(`quizes/${e}/${this.questions}`)
+        .then((response) => {
+          this.questions = []
+          response.data.forEach((element) => {
+            this.questions.push(element)
+          })
         })
         .catch((error) => {
           console.error('Error:', error)
@@ -279,19 +382,17 @@ export default {
       })
     },
     deleteScore(e) {
-      const index = this.quizes.findIndex((item) => item.name === e)
-      fetch(
-        `http://localhost:3000/api/scores/quizes/${this.quizes[index]._id}`,
-        {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      )
+      console.log(e)
+      Api.delete(`/scores/${e}`).catch((error) => {
+        console.error('Error:', error)
+      })
+      this.$refs.table.refresh()
     }
   }
 }
 </script>
 <style>
+.buttons {
+  margin: 15% auto auto auto;
+}
 </style>
