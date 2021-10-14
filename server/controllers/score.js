@@ -13,14 +13,20 @@ router.post('/', function (req, res, next) {
 router.get('/', function (req, res, next) {
       Score.find(function(err, scores) {
         if(err) {return next(err);}
-        res.status(200).json({score: scores})
+        if (scores == null){
+          res.status(404).json({"message": "No scores found"})
+        }
+        res.status(200).json(scores)
     })  
   })
   
   router.get('/:id', function (req, res, next) {
     Score.findById(req.params.id, function(err, scores) {
       if(err) {return next(err);}
-      res.status(200).json({score: scores})
+      if (scores == null){
+        res.status(404).json({"message": "Score not found"})
+      }
+      res.status(200).json(scores)
   })    
   })
 
@@ -30,8 +36,9 @@ router.delete('/:id', function(req, res, next){
         if (score == null) {
             return res.status(404).json({"message": "Score not found"});
         }
-        res.status(200).json({"message": "score deleted"});    });
-      });
+        res.status(200).json({"message": "Score deleted"});    
+    });
+  });
 
 router.put('/:id', function (req, res, next){
   var id = req.params.id;

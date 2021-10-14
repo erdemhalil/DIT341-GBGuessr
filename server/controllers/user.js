@@ -6,7 +6,10 @@ var User = require('../models/users');
 router.get('/', function (req, res, next) {
     User.find(function(err, users) {
       if(err) {return next(err);}
-      res.status(200).json({User: users})
+      if (users == null) {
+          return res.status(404).json({"message": "No users found"});
+      }
+      res.status(200).json(users)
   })  
   })
 
@@ -14,7 +17,7 @@ router.get('/', function (req, res, next) {
     User.findById(req.params.id, function(err, users) {
       if(err) {return next(err);}
       if (users == null) {
-          return res.status(404).json({"message": "user not found"});
+          return res.status(404).json({"message": "User not found"});
       }
       res.status(200).json(users)
   })  
@@ -35,9 +38,21 @@ router.delete('/:id', function (req, res, next){
              return res.status(404).json(
                  {"message": "User not found"})
          }
-         res.status(200).json({"message": "user deleted"});
+         res.status(200).json({"message": "User deleted"});
      });
 });
+
+/*
+router.delete('/', function (req, res, next){
+    User.deleteMany({}, function(err, user){
+        if (err) { return next(err); }
+        if (user.deletedCount == 0) {
+            return res.status(404).json({"message": "User not found"});
+        }
+        res.status(200).json({"message": "All users deleted"});
+    });
+})
+*/
 
 
 router.put('/:id', function (req, res, next){

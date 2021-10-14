@@ -1,6 +1,7 @@
 <template>
   <div class="background">
     <img id = "bannerImage" src="https://i.imgur.com/qA90xIX.png" alt="GBGuesser Banner">
+    <img id = "phoneBanner" src="https://i.imgur.com/2nEkfEi.png" alt="GBGuesser Banner">
     <div class="aboutContainer">
     <div class="about">
       <h3 style="text-align:center;">ABOUT</h3>
@@ -57,6 +58,10 @@ html {
   margin-top: 45px;
 }
 
+#phoneBanner{
+  display: none;
+}
+
 .background {
   position: absolute;
   min-width: 100vw;
@@ -100,6 +105,13 @@ html {
 @media screen and (max-width: 768px) {
   .about {
     width: 80vw;
+  }
+  #bannerImage{
+    display: none;
+  }
+  #phoneBanner{
+    margin-top: 50px;
+    display: initial;
   }
 }
 

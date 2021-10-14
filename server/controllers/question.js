@@ -13,6 +13,9 @@ router.post('/', function (req, res, next) {
 router.get('/', function (req, res, next) {
   Question.find(function(err, questions) {
     if(err) {return next(err);}
+    if (questions == null){
+      return res.status(404).json({"message": "No questions found"});
+    }
     res.status(200).json(questions)
 })  
 })
@@ -20,6 +23,9 @@ router.get('/', function (req, res, next) {
 router.get('/:id', function (req, res, next) {
   Question.findById(req.params.id, function(err, questions) {
     if(err) {return next(err);}
+    if (questions == null){
+      return res.status(404).json({"message": "Question not found"});
+    }
     res.status(200).json(questions)
 })    
 })
@@ -32,7 +38,7 @@ router.delete('/', function (req, res, next){
       return res.status(404).json(
           {"message": "Question not found"})
     }
-    res.status(200).json({"message": "questions deleted"});
+    res.status(200).json({"message": "Questions deleted"});
   });
 });
 
@@ -42,7 +48,7 @@ router.delete('/:id', function(req, res, next){
       if (question == null) {
           return res.status(404).json({"message": "Question not found"});
       }
-      res.status(200).json({"message": "question deleted"});
+      res.status(200).json({"message": "Question deleted"});
     });
 });
 
@@ -68,7 +74,7 @@ router.patch('/:id', function (req, res, next){
   Question.findById(id, function(err, question){
       if(err){ return next(err); }
       if(question == null){
-          return res.status(404).json({"message": "Quesiton not found"});
+          return res.status(404).json({"message": "Question not found"});
       }
       question.description = (req.body.description || question.description);
       question.answer = (req.body.answer || question.answer);

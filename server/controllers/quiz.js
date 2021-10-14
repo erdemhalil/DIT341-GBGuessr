@@ -13,6 +13,9 @@ router.post('/', function (req, res, next) {
 router.get('/', function (req, res, next) {
     Quiz.find(function(err, quizes) {
       if(err) {return next(err);}
+      if (quizes == null) {
+        return res.status(404).json({"message": "No quizes found"});
+      }
       res.status(200).json(quizes)
   })  
 })
@@ -20,6 +23,9 @@ router.get('/', function (req, res, next) {
 router.get('/filter', function (req, res, next) {
   Quiz.find({category: req.query.category}, function(err, quizes) {
     if(err) {return next(err);}
+    if (quizes == null) {
+      return res.status(404).json({"message": "No quizes with such category"});
+    }
     res.status(200).json(quizes)
 }) 
 })
@@ -27,17 +33,19 @@ router.get('/filter', function (req, res, next) {
 router.get('/:id', function (req, res, next) {
   Quiz.findById(req.params.id, function(err, quizes) {
     if(err) {return next(err);}
+    if (quizes == null) {
+      return res.status(404).json({"message": "Quiz not found"});
+    }
     res.status(200).json(quizes)
 })    
 })
 
 
 router.delete('/', function(req, res, next){
-    var id = req.params.id;
     Quiz.deleteMany({}, function(err, quiz){
         if (err) { return next(err); }
         if (quiz.deletedCount == 0) {
-            return res.status(404).json({"message": "Quiz not found"});
+            return res.status(404).json({"message": "No quizes to delete"});
         }
         res.status(200).json({"message": "All quizes deleted"});
     });
@@ -132,9 +140,9 @@ var id = req.params.id;
         }
       })
     if(questionsId.length == 0){
-      return res.status(404).json({"message": "Question not found"})
+      return res.status(404).json({"message": "No questions found"})
     }  
-    res.status(200).json({"questions": questionsId})
+    res.status(200).json(questionsId)
   })
 })
 
@@ -154,7 +162,7 @@ var question_id = req.params.question_id;
         return res.status(404).json({"message": "Question not found"})
       }  
     
-    res.status(200).json({question})
+    res.status(200).json(question)
   })
 })
 })
@@ -180,7 +188,7 @@ var question_id = req.params.question_id;
       if (question == null) {
         return res.status(404).json({"message": "Question not found"});
       }
-      res.status(200).json({"questions": question})
+      res.status(200).json(question)
     })
     })
   })
