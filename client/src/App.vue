@@ -30,7 +30,6 @@ export default {
   },
   methods: {
     logout() {
-      console.log('kjgfdhj')
       this.$session.remove('user')
       console.log(this.$session.get('user'))
       location.href = '/admin'
