@@ -9,7 +9,7 @@ router.get('/', function (req, res, next) {
       if (users == null) {
           return res.status(404).json({"message": "No users found"});
       }
-      res.status(200).json(users)
+      res.status(200).json({User: users})
   })  
   })
 
