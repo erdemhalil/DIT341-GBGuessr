@@ -142,7 +142,7 @@ var id = req.params.id;
     if(questionsId.length == 0){
       return res.status(404).json({"message": "No questions found"})
     }  
-    res.status(200).json(questionsId)
+    res.status(200).json({"questions": questionsId})
   })
 })
 
@@ -162,7 +162,7 @@ var question_id = req.params.question_id;
         return res.status(404).json({"message": "Question not found"})
       }  
     
-    res.status(200).json(question)
+    res.status(200).json({question})
   })
 })
 })
@@ -188,7 +188,7 @@ var question_id = req.params.question_id;
       if (question == null) {
         return res.status(404).json({"message": "Question not found"});
       }
-      res.status(200).json(question)
+      res.status(200).json({"questions": question})
     })
     })
   })

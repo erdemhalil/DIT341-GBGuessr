@@ -16,7 +16,7 @@ router.get('/', function (req, res, next) {
         if (scores == null){
           res.status(404).json({"message": "No scores found"})
         }
-        res.status(200).json(scores)
+        res.status(200).json({score: scores})
     })  
   })
   
@@ -26,7 +26,7 @@ router.get('/', function (req, res, next) {
       if (scores == null){
         res.status(404).json({"message": "Score not found"})
       }
-      res.status(200).json(scores)
+      res.status(200).json({score: scores})
   })    
   })
 
