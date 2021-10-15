@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-// Consider adding 'match' type to validate regex
-// 'minLength' and 'maxLength' for password
+// Consider adding 'match' type to validate regex for email
+// If there won't be an email associated to it, replace it with username (remember to change routes and postman tests)
 
 var userSchema = new Schema({
     email: { type: String, unique: true, required: true},

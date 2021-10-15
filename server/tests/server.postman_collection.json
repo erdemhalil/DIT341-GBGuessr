@@ -280,228 +280,6 @@
 			]
 		},
 		{
-			"name": "Locations",
-			"item": [
-				{
-					"name": "post Location",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var jsonData = pm.response.json();\r",
-									"pm.globals.set(\"location_id\", jsonData._id);\r",
-									"\r",
-									"pm.test(\"response is CREATED\", function() {\r",
-									"    pm.response.to.have.status(201);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"picture\": \"pic\",\r\n    \"x_coordinate\": \"16\",\r\n    \"y_coordinate\": \"12\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/locations/",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"locations",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get All Locations",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"response is CREATED\", function() {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/locations/{{location_id}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"locations",
-								"{{location_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get Location by ID",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"response is CREATED\", function() {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"response should have valid JSON data\", function() {\r",
-									"    var jsonData=pm.response.json();\r",
-									"    pm.expect(jsonData.picture).to.eql('pic');\r",
-									"    pm.expect(jsonData.x_coordinate).to.eql(16);\r",
-									"    pm.expect(jsonData.y_coordinate).to.eql(12);\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{host}}/api/locations/{{location_id}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"locations",
-								"{{location_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "patch Location",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"response is CREATED\", function() {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"response should have valid JSON data\", function() {\r",
-									"    var jsonData=pm.response.json();\r",
-									"    pm.expect(jsonData.picture).to.eql('newPic');\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"picture\": \"newPic\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/locations/{{location_id}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"locations",
-								"{{location_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "put Location",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"response is CREATED\", function() {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"response should have valid JSON data\", function() {\r",
-									"    var jsonData=pm.response.json();\r",
-									"    pm.expect(jsonData.picture).to.eql('anotherlink');\r",
-									"    pm.expect(jsonData.x_coordinate).to.eql(6);\r",
-									"    pm.expect(jsonData.y_coordinate).to.eql(25);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"picture\": \"anotherlink\",\r\n    \"x_coordinate\": \"6\",\r\n    \"y_coordinate\": \"25\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/locations/{{location_id}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"locations",
-								"{{location_id}}"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
 			"name": "Quizes",
 			"item": [
 				{
@@ -528,6 +306,50 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"category\": \"Large\",\r\n    \"name\": \"The HUGE Quiz\",\r\n    \"image\": \"https://play-lh.googleusercontent.com/CC9gYlJbBCSFq8vKR1f_62oG17-3m7LEQ_GGZSoy_Kk-_uiDwBHX4eVzHkeI3i9Ztg\",\r\n    \"description\": \"This quiz will test your GBG knowledge\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/quizes/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"quizes",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post Quiz 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.globals.set(\"quiz_id2\", jsonData._id);\r",
+									"\r",
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"category\": \"Cat\",\r\n    \"name\": \"Test Quiz 2\",\r\n    \"image\": \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRazI6sefQa3_Yz_YSNIYaC9b6vDGilVNsUHg&usqp=CAU\",\r\n    \"description\": \"This quiz will test\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -779,7 +601,50 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"quiz_id\": \"{{quiz_id}}\",\r\n    \"type\": \"True OR False\",\r\n    \"description\": \"What happened here?\",\r\n    \"answer\": \"Nothing\",\r\n    \"options\": [\"Not the answer\", \"Definitely not the answer lol\", \"The tricky one but not there yet\", \"Nothing\"],\r\n    \"score\": \"100\"\r\n}",
+							"raw": "{\r\n    \"quiz_id\": \"{{quiz_id}}\",\r\n    \"description\": \"What happened here?\",\r\n    \"answer\": \"Nothing\",\r\n    \"options\": [\"Not the answer\", \"Definitely not the answer lol\", \"The tricky one but not there yet\", \"Nothing\"],\r\n    \"score\": \"100\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/questions",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"questions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post Question 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.globals.set(\"question_id2\", jsonData._id);\r",
+									"\r",
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"quiz_id\": \"{{quiz_id2}}\",\r\n    \"description\": \"Are we testing?\",\r\n    \"answer\": \"Yes, we are\",\r\n    \"options\": [\"Not the answer\", \"Yes, we are\", \"The tricky one but not there yet\", \"Nothing\"],\r\n    \"score\": \"800\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -822,7 +687,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"quiz_id\": \"{{quiz_id}}\",\r\n    \"type\": \"You are not my type\",\r\n    \"description\": \"What is the most famous spot to hangout in Gothenburg?\",\r\n    \"answer\": \"Definitely not Hisingen lol\",\r\n    \"options\": [\"Liseberg\", \"Jarntorget\", \"Nordstan\", \"Definitely not Hisingen lol\"],\r\n    \"score\": \"1000\"\r\n}",
+							"raw": "{\r\n    \"quiz_id\": \"{{quiz_id}}\",\r\n    \"description\": \"What is the most famous spot to hangout in Gothenburg?\",\r\n    \"answer\": \"Definitely not Hisingen lol\",\r\n    \"options\": [\"Liseberg\", \"Jarntorget\", \"Nordstan\", \"Definitely not Hisingen lol\"],\r\n    \"score\": \"1000\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1034,10 +899,9 @@
 									"\r",
 									"pm.test(\"response should have valid JSON data\", function() {\r",
 									"    var jsonData=pm.response.json();\r",
-									"    pm.expect(jsonData.type).to.eql('Prompt');\r",
 									"    pm.expect(jsonData.description).to.eql('What happened here, again?');\r",
 									"    pm.expect(jsonData.answer).to.eql('Nothing again');\r",
-									"    pm.expect(jsonData.options.length).to.eql(3);\r",
+									"    pm.expect(jsonData.options.length).to.eql(4);\r",
 									"    pm.expect(jsonData.score).to.eql(150);\r",
 									"});"
 								],
@@ -1050,7 +914,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"type\": \"Prompt\",\r\n    \"description\": \"What happened here, again?\",\r\n    \"answer\": \"Nothing again\",\r\n    \"options\": [\"Change 1\", \"Change 2\", \"Change 3\"],\r\n    \"score\": \"150\"\r\n}",
+							"raw": "{\r\n    \"description\": \"What happened here, again?\",\r\n    \"answer\": \"Nothing again\",\r\n    \"options\": [\"Change 1\", \"Change 2\", \"Change 3\", \"Nothing again\"],\r\n    \"score\": \"150\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1348,38 +1212,6 @@
 			"name": "DELETES",
 			"item": [
 				{
-					"name": "delete Location",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"response is CREATED\", function() {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/locations/{{location_id}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"locations",
-								"{{location_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "delete a Particular Question in a Particular Quiz",
 					"event": [
 						{
@@ -1484,10 +1316,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"// Expect 404 because the only created location is already deleted in the previous test\r",
-									"\r",
 									"pm.test(\"response is CREATED\", function() {\r",
-									"    pm.response.to.have.status(404);\r",
+									"    pm.response.to.have.status(200);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1512,51 +1342,14 @@
 					"response": []
 				},
 				{
-					"name": "delete all Locations",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"// Expect 404 because the only created location is already deleted in the previous test\r",
-									"\r",
-									"pm.test(\"response is CREATED\", function() {\r",
-									"    pm.response.to.have.status(404);\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/locations/",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"locations",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "delete all Quizes",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"// Expect 404 because the only created location is already deleted in the previous test\r",
-									"\r",
 									"pm.test(\"response is CREATED\", function() {\r",
-									"    pm.response.to.have.status(404);\r",
+									"    pm.response.to.have.status(200);\r",
 									"});"
 								],
 								"type": "text/javascript"
