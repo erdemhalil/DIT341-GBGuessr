@@ -10,7 +10,7 @@
             <h3>{{i.name}}</h3>
         <img v-bind:src="i.image" alt="">
         <h6>{{i.category}}</h6>
-        <p>this quiz features a bunch of fun trivia questions, and the most famous bar locations</p>
+        <p>{{i.description}}</p>
         <router-link :to="{path: '/quiz/' + i._id}">Play</router-link>
         </div>
         </b-col>
@@ -61,7 +61,7 @@ export default {
     }
 
     .quiz h3 {
-        padding: 20px 0px 20px 20px;
+        padding: 20px 0px 20px 0px;
     }
 
 .quiz img {
