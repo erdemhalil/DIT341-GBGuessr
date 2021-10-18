@@ -104,6 +104,7 @@ export default {
         .catch((error) => {
           console.error('Error:', error)
         })
+      this.$router.push('/quiz')
     }
   },
 
