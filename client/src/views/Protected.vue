@@ -5,7 +5,12 @@
     </p>
     <div class="buttons">
       <b-button size="lg" v-b-modal.modal-create-quiz>Create Quiz</b-button>
-      <b-button size="lg" v-b-modal.modal-list-quizes>Manage Quizes</b-button>
+      <b-button
+        size="lg"
+        v-on:click="requestAllQuizes()"
+        v-b-modal.modal-list-quizes
+        >Manage Quizes</b-button
+      >
       <b-button size="lg" v-b-modal.modal-manage-score>Manage Scores</b-button>
     </div>
 
@@ -15,6 +20,7 @@
       ref="modal"
       title="Create Quiz"
       size="xl"
+      ok-title="Submit"
       @show="resetModal"
       @hidden="resetModal"
       @ok="handleOk"
@@ -81,9 +87,8 @@
       ref="modal"
       title="Manage Quiz"
       size="xl"
-      @show="resetModal"
-      @hidden="resetModal"
-      @ok="handleOk"
+      ok-only="true"
+      ok-title="Leave"
     >
       <datalist id="quizes-list">
         <option v-for="quiz in quizes" :key="quiz._id">{{ quiz.name }}</option>
@@ -96,31 +101,42 @@
           :items="quizes"
           :fields="quizFields"
         >
-          <template #cell(_id)="data">
+          <template #cell(_id)="quizData">
             <b-button
               size="sm"
               variant="danger"
-              v-on:click="deleteQuiz(data.value)"
-              class="mr-2 responsive-button"
+              v-on:click="deleteQuiz(quizData.value)"
             >
               Delete
             </b-button>
-            <b-button size="sm" class="responsive-button" v-b-modal.modal-modify-quiz>Modify</b-button>
+            <b-button
+              size="sm"
+              class="responsive-button"
+              v-on:click="requestQuestion(quizData.value)"
+              v-b-modal.modal-view-quiz
+              >Modify</b-button
+            >
           </template>
         </b-table>
       </div>
+      <!-- view specific quiz modal -->
       <b-modal
-        id="modal-modify-quiz"
+        id="modal-view-quiz"
         ref="modal"
-        title="Modify Quiz"
+        title="Viewing Quiz"
         size="lg"
-        @show="resetModal"
-        @hidden="resetModal"
-        @ok="handleOk"
+        ok-only="true"
+        ok-title="Leave"
       >
+        <b-button size="m" v-b-modal.modal-add-question>
+          Add new Question
+        </b-button>
+        <b-button size="m" v-b-modal.modal-edit-quiz variant="info">
+          Edit Quiz
+        </b-button>
         <datalist id="questions-list">
-          <option v-for="question in questions" :key="question._id">
-            {{ question.name }}
+          <option v-for="quiz in quizes" :key="quiz._id">
+            {{ quiz.name }}
           </option>
         </datalist>
         <div>
@@ -131,19 +147,146 @@
             :items="questions"
             :fields="questionFields"
           >
-            <template #cell(_id)="data">
+            <template #cell(_id)="questionData">
               <b-button
                 size="sm"
                 variant="danger"
-                v-on:click="deleteQuiz(data.value)"
-                class="mr-2"
+                v-on:click="deleteQuestion(questionData.value)"
               >
                 Delete
               </b-button>
-              <b-button size="sm" v-b-modal.modal-modify-quiz v-on:click="requestQuestion(data_value)">Modify</b-button>
             </template>
           </b-table>
         </div>
+      </b-modal>
+      <!-- add question modal -->
+      <b-modal
+        id="modal-add-question"
+        ref="modal"
+        title="Add Question"
+        size="xl"
+        @ok="createQuestion"
+      >
+        <form ref="form" @submit.stop.prevent="handleSubmit">
+          <p style="font-size: 10px">Current quiz ID: {{ selectedQuiz }}</p>
+          <b-form-group
+            ref="description"
+            id="questionDescription"
+            label="Question Description"
+            label-for="questionDescription-input"
+            invalid-feedback="Description is required"
+            :state="questionDescriptionState"
+          >
+            <b-form-input
+              id="questionDescription-input"
+              v-model="questionDescription"
+              :state="questionDescriptionState"
+              required
+            ></b-form-input>
+          </b-form-group>
+          <b-form-group
+            ref="questionOptions"
+            label="Options"
+            label-for="questionOptions-input"
+            invalid-feedback="Options and Answer are required"
+            :state="categoryState"
+          >
+            <p style="font-size: 13px">
+              Separate each option with a semicolon ' ; '
+            </p>
+            <b-form-input
+              id="questionOptions-input"
+              v-model="questionOptions"
+              :state="questionOptionsState"
+              required
+            ></b-form-input>
+            <p style="font-size: 13px">Correct Answer</p>
+            <b-form-input
+              id="questionAnswer-input"
+              v-model="questionAnswer"
+              :state="questionAnswerState"
+              size="sm"
+              required
+            ></b-form-input>
+          </b-form-group>
+          <b-form-group
+            label="Score"
+            label-for="questionScore-input"
+            invalid-feedback="Score is required"
+            :state="descriptionState"
+          >
+            <b-form-input
+              id="questionScore-input"
+              v-model="questionScore"
+              :state="questionScoreState"
+            ></b-form-input>
+          </b-form-group>
+        </form>
+      </b-modal>
+      <!-- edit quiz -->
+      <b-modal
+        id="modal-edit-quiz"
+        ref="modal"
+        title="Edit Quiz"
+        size="xl"
+        @ok="patchQuiz"
+      >
+        <p style="font-size: 13px">Empty fields will not change the quiz.</p>
+        <form ref="form" @submit.stop.prevent="handleSubmit">
+          <b-form-group
+            ref="name"
+            id="quizname"
+            label="Quiz Name"
+            label-for="name-input"
+            invalid-feedback="Name is required"
+            :state="nameState"
+          >
+            <b-form-input
+              id="name-input"
+              v-model="name"
+              :state="nameState"
+              required
+            ></b-form-input>
+          </b-form-group>
+          <b-form-group
+            ref="category"
+            label="Category"
+            label-for="category-input"
+            invalid-feedback="Category is required"
+            :state="categoryState"
+          >
+            <b-form-input
+              id="category-input"
+              v-model="category"
+              :state="categoryState"
+            ></b-form-input>
+          </b-form-group>
+          <b-form-group
+            label="Description"
+            label-for="description-input"
+            invalid-feedback="Description is required"
+            :state="descriptionState"
+          >
+            <b-form-input
+              id="description-input"
+              v-model="description"
+              :state="descriptionState"
+            ></b-form-input>
+          </b-form-group>
+          <b-form-group
+            label="Image Link"
+            type="URL"
+            label-for="image-input"
+            invalid-feedback="Image is required"
+            :state="imageState"
+          >
+            <b-form-input
+              id="image-input"
+              v-model="image"
+              :state="imageState"
+            ></b-form-input>
+          </b-form-group>
+        </form>
       </b-modal>
     </b-modal>
     <!-- MANAGE SCORE -->
@@ -152,20 +295,42 @@
       ref="modal"
       title="Manage Score"
       size="xl"
-      @show="resetModal"
-      @hidden="resetModal"
-      @ok="handleOk"
+      ok-only="true"
+      ok-title="Leave"
     >
       <b-form-input
         list="scores-list"
-        v-on:change="(e) => requestScore(e)"
+        v-on:change="(id) => requestScore(id)"
       ></b-form-input>
-      <b-button size="m" class="mr-2 responsive-button leaderboard-button"> Clear Leaderboard (W.I.P.) </b-button>
+      <b-button size="m" variant="danger" v-b-modal.modal-clear-leaderboard>
+        Clear All Leaderboards
+      </b-button>
+      <b-modal
+        id="modal-clear-leaderboard"
+        ref="modal"
+        title="Are you Sure?"
+        size="m"
+        ok-variant="success"
+        ok-title="Yes"
+        cancel-title="No"
+        @ok="deleteAllScore"
+      >
+        <p>
+          This action will delete all scores from all leaderboards in all
+          quizes, and is irreversible!
+        </p>
+      </b-modal>
       <datalist id="scores-list">
         <option v-for="quiz in quizes" :key="quiz._id">{{ quiz.name }}</option>
       </datalist>
       <div>
-        <b-table ref="table" striped hover :items="scores" :fields="fields">
+        <b-table
+          ref="table"
+          striped
+          hover
+          :items="scores"
+          :fields="scoreFields"
+        >
           <template #cell(_id)="data">
             <b-button
               size="sm"
@@ -191,7 +356,7 @@ export default {
       quizes: [],
       scores: [],
       questions: [],
-      fields: [
+      scoreFields: [
         {
           key: 'username',
           label: 'Name',
@@ -247,19 +412,28 @@ export default {
         },
         {
           key: 'score',
-          labe: 'Score',
+          label: 'Score',
           sortable: true
+        },
+        {
+          key: '_id',
+          label: 'Actions',
+          sortable: false
         }
       ],
-      name: '',
+      descriptionState: null,
       nameState: null,
-      description: '',
-      submittedDescriptions: [],
-      image: '',
       imageState: null,
-      category: '',
       categoryState: null,
-      chosenQuiz: ''
+      selectedQuiz: '',
+      questionDescription: '',
+      questionDescriptionState: null,
+      questionAnswer: '',
+      questionAnswerState: null,
+      questionOptions: '',
+      questionOptionsState: null,
+      questionScore: null,
+      questionScoreState: null
     }
   },
   beforeMount() {
@@ -271,23 +445,47 @@ export default {
     }
   },
   mounted() {
-    fetch('http://localhost:3000/api/quizes/', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        this.quizes = data
+    Api.get('/quizes')
+      .then((response) => {
+        console.log(response.data)
+        response.data.forEach((element) => {
+          this.quizes.push(element)
+        })
+        console.log(this.quizes)
+      })
+      .catch((error) => {
+        console.error('Error:', error)
+      })
+    Api.get('/questions')
+      .then((response) => {
+        console.log(response.data)
+        response.data.forEach((element) => {
+          this.questions.push(element)
+        })
+        console.log(this.questions)
       })
       .catch((error) => {
         console.error('Error:', error)
       })
   },
   methods: {
-    requestScore(e) {
-      const index = this.quizes.findIndex((item) => item.name === e)
+    requestAllQuizes() {
+      console.log('Requesting ALL quizes!')
+      this.quizes = []
+      Api.get('/quizes')
+        .then((response) => {
+          console.log('Now we are getting em!!')
+          response.data.forEach((element) => {
+            this.quizes.push(element)
+          })
+          console.log(this.quizes)
+        })
+        .catch((error) => {
+          console.error('Error:', error)
+        })
+    },
+    requestScore(id) {
+      const index = this.quizes.findIndex((item) => item.name === id)
       Api.get(`/scores/quizes/${this.quizes[index]._id}`)
         .then((response) => {
           this.scores = [] // resets the score
@@ -310,7 +508,8 @@ export default {
     requestQuiz() {
       Api.get(`quizes/${this.quizes}`)
         .then((response) => {
-          this.quizes = [] // resets the score
+          this.quizes = []
+          console.log(response.data)
           response.data.forEach((element) => {
             this.quizes.push(element)
           })
@@ -319,12 +518,14 @@ export default {
           console.error('Error:', error)
         })
     },
-    requestQuestion(e) {
-      console.log(e)
-      Api.get(`quizes/${e}/${this.questions}`)
+    requestQuestion(id) {
+      console.log(id)
+      this.selectedQuiz = id // remembers the quiz ID
+      this.questions = []
+      Api.get(`quizes/${id}/questions/`)
         .then((response) => {
-          this.questions = []
-          response.data.forEach((element) => {
+          console.log(response.data.questions)
+          response.data.questions.forEach((element) => {
             this.questions.push(element)
           })
         })
@@ -366,26 +567,72 @@ export default {
       })
     },
     createQuiz() {
-      fetch('http://localhost:3000/api/quizes', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          name: this.name,
-          description: this.description,
-          image: this.image,
-          category: this.category
-        })
-      })
-    },
-    deleteScore(e) {
-      console.log(e)
-      Api.delete(`/scores/${e}`).catch((error) => {
+      Api.post('/quizes', {
+        name: this.name,
+        description: this.description,
+        image: this.image,
+        category: this.category
+      }).catch((error) => {
         console.error('Error:', error)
       })
-      this.$refs.table.refresh()
+    },
+    createQuestion() {
+      console.log(this.questionOptions)
+      const optionList = this.questionOptions.split(/\s*(?:;|$)\s*/)
+      console.log(optionList)
+      Api.post(`/quizes/${this.selectedQuiz}/questions`, {
+        description: this.questionDescription,
+        options: optionList,
+        answer: this.questionAnswer,
+        score: this.questionScore
+      }).catch((error) => {
+        console.error('Error:', error)
+      })
+    },
+    deleteScore(id) {
+      console.log(id)
+      Api.delete(`/scores/${id}`)
+        .catch((error) => {
+          console.error('Error:', error)
+        })
+        .then((response) => {
+          const index = this.scores.findIndex((score) => score._id === id)
+          if (~index) {
+            this.scores.splice(index, 1)
+          }
+        })
+    },
+    deleteAllScore() {
+      Api.delete('/scores').catch((error) => {
+        console.error('Error:', error)
+      })
+    },
+    deleteQuiz(id) {
+      console.log(id)
+      Api.delete(`/quizes/${id}`)
+        .catch((error) => {
+          console.error('Error:', error)
+        })
+        .then((response) => {
+          const index = this.quizes.findIndex((quiz) => quiz._id === id)
+          if (~index) {
+            this.quizes.splice(index, 1)
+          }
+        })
+    },
+    deleteQuestion(id) {
+      Api.delete(`/questions/${id}`)
+        .catch((error) => {
+          console.error('Error:', error)
+        })
+        .then((response) => {
+          const index = this.questions.findIndex(
+            (question) => question._id === id
+          )
+          if (~index) {
+            this.questions.splice(index, 1)
+          }
+        })
     }
   }
 }
@@ -398,23 +645,26 @@ export default {
   margin: 10px;
 }
 
+.btn {
+  margin-right: 5px;
+}
+
 .modal-content label {
-  font-size: 17px!important;
+  font-size: 17px !important;
 }
 
 @media screen and (max-width: 600px) {
-.modal-content {
-  font-size: 7px;
-}
+  .modal-content {
+    font-size: 7px;
+  }
 
-.responsive-button {
-  padding: 0px!important;
-  font-size: 7px;
-}
+  .responsive-button {
+    padding: 0px !important;
+    font-size: 7px;
+  }
 
-.leaderboard-button {
-  margin: 5px;
+  .leaderboard-button {
+    margin: 5px;
+  }
 }
-}
-
 </style>
