@@ -577,6 +577,10 @@ export default {
       this.questionScoreState = null
       this.questionDescription = null
       this.questionDescriptionState = null
+      this.questionAnswer = null
+      this.questionAnswerState = null
+      this.questionOptions = null
+      this.questionOptionsState = null
     },
     handleOk(bvModalEvt) {
       // Prevent modal from closing
