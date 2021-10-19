@@ -31,14 +31,12 @@ export default {
   methods: {
     logout() {
       this.$session.remove('user')
-      console.log(this.$session.get('user'))
       location.href = '/admin'
     }
   },
   computed: {
     logoutButton: function () {
       if (this.$session.get('user')) {
-        console.log(this.$session.get('user'))
         return true
       }
       return false

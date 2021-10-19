@@ -69,7 +69,6 @@ export default {
               score.created_on = score.created_on.slice(0, 10) + ' ' + score.created_on.slice(11, 19)
             })
           })
-          console.log(this.scores)
         })
         .catch((error) => {
           console.error('Error:', error)

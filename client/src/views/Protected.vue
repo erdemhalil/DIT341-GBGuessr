@@ -477,32 +477,25 @@ export default {
     }
   },
   beforeMount() {
-    if (this.$session.get('user')) {
-      console.log(this.$session.get('user'))
-    } else {
-      alert('Please login to get access')
+    if (!this.$session.get('user')) {
       this.$router.push('/admin')
     }
   },
   mounted() {
     Api.get('/quizes')
       .then((response) => {
-        console.log(response.data)
         response.data.forEach((element) => {
           this.quizes.push(element)
         })
-        console.log(this.quizes)
       })
       .catch((error) => {
         console.error('Error:', error)
       })
     Api.get('/questions')
       .then((response) => {
-        console.log(response.data)
         response.data.forEach((element) => {
           this.questions.push(element)
         })
-        console.log(this.questions)
       })
       .catch((error) => {
         console.error('Error:', error)
@@ -510,15 +503,12 @@ export default {
   },
   methods: {
     requestAllQuizes() {
-      console.log('Requesting ALL quizes!')
       this.quizes = []
       Api.get('/quizes')
         .then((response) => {
-          console.log('Now we are getting em!!')
           response.data.forEach((element) => {
             this.quizes.push(element)
           })
-          console.log(this.quizes)
         })
         .catch((error) => {
           console.error('Error:', error)
@@ -539,7 +529,6 @@ export default {
                 score.created_on.slice(11, 19)
             })
           })
-          console.log(this.scores)
         })
         .catch((error) => {
           console.error('Error:', error)
@@ -549,7 +538,6 @@ export default {
       Api.get(`quizes/${this.quizes}`)
         .then((response) => {
           this.quizes = []
-          console.log(response.data)
           response.data.forEach((element) => {
             this.quizes.push(element)
           })
@@ -559,12 +547,10 @@ export default {
         })
     },
     requestQuestion(id) {
-      console.log(id)
       this.selectedQuiz = id // remembers the quiz ID
       this.questions = []
       Api.get(`quizes/${id}/questions/`)
         .then((response) => {
-          console.log(response.data.questions)
           response.data.questions.forEach((element) => {
             this.questions.push(element)
           })
@@ -662,9 +648,7 @@ export default {
       })
     },
     createQuestion() {
-      console.log(this.questionOptions)
       const optionList = this.questionOptions.split(/\s*(?:;|$)\s*/)
-      console.log(optionList)
       Api.post(`/quizes/${this.selectedQuiz}/questions`, {
         description: this.questionDescription,
         options: optionList,
@@ -675,7 +659,6 @@ export default {
       })
     },
     deleteScore(id) {
-      console.log(id)
       Api.delete(`/scores/${id}`)
         .catch((error) => {
           console.error('Error:', error)
@@ -693,7 +676,6 @@ export default {
       })
     },
     deleteQuiz(id) {
-      console.log(id)
       Api.delete(`/quizes/${id}`)
         .catch((error) => {
           console.error('Error:', error)

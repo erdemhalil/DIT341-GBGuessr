@@ -115,7 +115,6 @@ export default {
     Api.get(`quizes/${this.quizId}/questions`)
       .then((response) => {
         this.questions = response.data.questions
-        console.log(this.questions)
       })
       .catch((error) => {
         console.error('Error:', error)
@@ -123,7 +122,6 @@ export default {
     Api.get(`quizes/${this.quizId}`)
       .then((response) => {
         this.quiz = response.data
-        console.log(this.quiz)
       })
       .catch((error) => {
         console.error('Error:', error)
