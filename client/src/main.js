@@ -12,6 +12,10 @@ Vue.use(VueSessionStorage)
 
 Vue.config.productionTip = false
 
+Vue.config.warnHandler = function (msg, vm, trace) {
+  return null
+}
+
 new Vue({
   router,
   render: function (h) { return h(App) }
