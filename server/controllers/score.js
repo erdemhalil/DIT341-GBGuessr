@@ -40,6 +40,16 @@ router.delete('/:id', function(req, res, next){
     });
   });
 
+router.delete('/', function(req, res, next){
+    Score.deleteMany({}, function(err, score){
+        if (err) { return next(err); }
+        if (score.deletedCount == 0) {
+            return res.status(404).json({"message": "No scores to delete"});
+        }
+        res.status(200).json({"message": "All scores deleted"});
+    });
+});
+
 router.put('/:id', function (req, res, next){
   var id = req.params.id;
   Score.findById(id, function(err, scores){

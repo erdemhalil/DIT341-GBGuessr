@@ -985,6 +985,50 @@
 					"response": []
 				},
 				{
+					"name": "post Score 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.globals.set(\"score_id2\", jsonData._id);\r",
+									"\r",
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"value\": \"1500\",\r\n    \"quiz_id\": \"{{quiz_id2}}\",\r\n    \"username\": \"Second Score\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/scores/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"scores",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "get All Scores",
 					"event": [
 						{
@@ -1304,6 +1348,38 @@
 								"api",
 								"quizes",
 								"{{quiz_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete All Scores",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"response is CREATED\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/scores/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"scores",
+								""
 							]
 						}
 					},

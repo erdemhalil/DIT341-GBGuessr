@@ -89,7 +89,9 @@ export default {
       if (this.questions[this.step].answer === this.answers) {
         this.score += this.questions[this.step].score
       }
-      this.step++
+      if (this.step + 1 !== this.questions.length) {
+        this.step++
+      }
     },
     submitQuiz() {
       if (this.username === '') {

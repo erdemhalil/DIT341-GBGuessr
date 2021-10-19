@@ -60,6 +60,8 @@ html {
 
 #phoneBanner{
   display: none;
+  max-height: 100vh;
+  min-width: 100vw;
 }
 
 .background {
