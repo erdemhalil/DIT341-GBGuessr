@@ -16,7 +16,7 @@
         ></b-form-input>
       </b-form-group>
       <b-button type="button" v-on:click="fetchUsers()" variant="primary"
-        >Submit</b-button
+        >Login</b-button
       >
     </b-form>
   </div>
@@ -71,6 +71,7 @@ export default {
 }
 
 #login-form input {
-  margin: 10px;
+  margin: 10px auto;
+  max-width: 90%;
 }
 </style>
