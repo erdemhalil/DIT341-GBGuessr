@@ -9,7 +9,7 @@
         <div class="quiz">
             <h3>{{i.name}}</h3>
         <img v-bind:src="i.image" alt="">
-        <h6>{{i.category}}</h6>
+        <h6><i>{{i.category}}</i></h6>
         <p>{{i.description}}</p>
         <router-link :to="{path: '/quiz/' + i._id}">Play</router-link>
         </div>
@@ -34,11 +34,9 @@ export default {
     this.url_data = this.$route.params.id
     Api.get('/quizes')
       .then(response => {
-        console.log(response.data)
         response.data.forEach(element => {
           this.quizes.push(element)
         })
-        console.log(this.quizes)
       })
       .catch((error) => {
         console.error('Error:', error)
@@ -69,7 +67,8 @@ export default {
         height: 150px;
         border-radius:50%;
         margin-bottom:20px;
-    }
+        object-fit: cover;
+  }
 
 .quiz a {
         background-color: #369093;
