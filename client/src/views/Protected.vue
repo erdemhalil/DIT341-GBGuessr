@@ -1,9 +1,9 @@
 <template>
   <div>
-    <p>
-      <b>Welcome to the Admin page!</b>
-    </p>
     <div class="buttons">
+      <h1>
+        <b>Admin Page</b>
+      </h1>
       <b-button size="lg" v-b-modal.modal-create-quiz>Create Quiz</b-button>
       <b-button
         size="lg"
@@ -23,14 +23,13 @@
       ok-title="Submit"
       @show="resetModal"
       @hidden="resetModal"
-      @ok="handleOk"
+      @ok="validateForms('modal-create-quiz', $event)"
     >
-      <form ref="form" @submit.stop.prevent="handleSubmit">
+      <form ref="quizForm" @submit.stop.prevent="handleSubmit">
         <b-form-group
-          ref="name"
+          ref="quizName"
           id="quizname"
           label="Quiz Name"
-          label-for="name-input"
           invalid-feedback="Name is required"
           :state="nameState"
         >
@@ -42,21 +41,20 @@
           ></b-form-input>
         </b-form-group>
         <b-form-group
-          ref="category"
+          ref="quizCategory"
           label="Category"
-          label-for="category-input"
           invalid-feedback="Category is required"
           :state="categoryState"
         >
           <b-form-input
             id="category-input"
+            required
             v-model="category"
             :state="categoryState"
           ></b-form-input>
         </b-form-group>
         <b-form-group
           label="Description"
-          label-for="description-input"
           invalid-feedback="Description is required"
           :state="descriptionState"
         >
@@ -64,17 +62,18 @@
             id="description-input"
             v-model="description"
             :state="descriptionState"
+            required
           ></b-form-input>
         </b-form-group>
         <b-form-group
           label="Image Link"
-          type="URL"
-          label-for="image-input"
           invalid-feedback="Image is required"
           :state="imageState"
         >
           <b-form-input
             id="image-input"
+            type="URL"
+            required
             v-model="image"
             :state="imageState"
           ></b-form-input>
@@ -103,6 +102,7 @@
         >
           <template #cell(_id)="quizData">
             <b-button
+              class="responsive-button"
               size="sm"
               variant="danger"
               v-on:click="deleteQuiz(quizData.value)"
@@ -124,7 +124,7 @@
         id="modal-view-quiz"
         ref="modal"
         title="Viewing Quiz"
-        size="lg"
+        size="xl"
         ok-only="true"
         ok-title="Leave"
       >
@@ -149,12 +149,41 @@
           >
             <template #cell(_id)="questionData">
               <b-button
+                class="responsive-button"
                 size="sm"
                 variant="danger"
                 v-on:click="deleteQuestion(questionData.value)"
               >
                 Delete
               </b-button>
+              <b-button
+                size="sm"
+                variant="info"
+                v-b-modal.modal-patch-score
+                class="responsive-button"
+              >
+                Score
+              </b-button>
+              <b-modal
+                id="modal-patch-score"
+                ref="modal"
+                title="Update Score"
+                size="m"
+                ok-variant="success"
+                ok-title="Submit"
+                @show="resetModal"
+                @ok="patchQuestionScore(questionData.value, $event)"
+              >
+                <p>Update the score of the question:</p>
+                <b-form-input
+                  ref="patchScore"
+                  id="questionScore-input"
+                  v-model="questionScore"
+                  :state="questionScoreState"
+                  required
+                  type="number"
+                ></b-form-input>
+              </b-modal>
             </template>
           </b-table>
         </div>
@@ -165,9 +194,11 @@
         ref="modal"
         title="Add Question"
         size="xl"
-        @ok="createQuestion"
+        ok-title="Submit"
+        @show="resetModal"
+        @ok="validateForms('modal-add-question', $event)"
       >
-        <form ref="form" @submit.stop.prevent="handleSubmit">
+        <form ref="questionForm" @submit.stop.prevent="handleSubmit">
           <p style="font-size: 10px">Current quiz ID: {{ selectedQuiz }}</p>
           <b-form-group
             ref="description"
@@ -189,7 +220,7 @@
             label="Options"
             label-for="questionOptions-input"
             invalid-feedback="Options and Answer are required"
-            :state="categoryState"
+            :state="questionOptionsState"
           >
             <p style="font-size: 13px">
               Separate each option with a semicolon ' ; '
@@ -212,32 +243,35 @@
           <b-form-group
             label="Score"
             label-for="questionScore-input"
-            invalid-feedback="Score is required"
-            :state="descriptionState"
+            invalid-feedback="Score is required and must be a whole number"
+            :state="questionScoreState"
           >
             <b-form-input
               id="questionScore-input"
               v-model="questionScore"
+              required
+              type="number"
               :state="questionScoreState"
             ></b-form-input>
           </b-form-group>
         </form>
       </b-modal>
-      <!-- edit quiz -->
+      <!-- edit (put) quiz -->
       <b-modal
         id="modal-edit-quiz"
         ref="modal"
         title="Edit Quiz"
         size="xl"
-        @ok="patchQuiz"
+        ok-title="Submit"
+        @show="resetModal"
+        @hidden="resetModal"
+        @ok="validateForms('modal-edit-quiz', $event)"
       >
-        <p style="font-size: 13px">Empty fields will not change the quiz.</p>
-        <form ref="form" @submit.stop.prevent="handleSubmit">
+        <form ref="quizForm" @submit.stop.prevent="handleSubmit">
           <b-form-group
-            ref="name"
+            ref="quizName"
             id="quizname"
             label="Quiz Name"
-            label-for="name-input"
             invalid-feedback="Name is required"
             :state="nameState"
           >
@@ -249,21 +283,20 @@
             ></b-form-input>
           </b-form-group>
           <b-form-group
-            ref="category"
+            ref="quizCategory"
             label="Category"
-            label-for="category-input"
             invalid-feedback="Category is required"
             :state="categoryState"
           >
             <b-form-input
               id="category-input"
+              required
               v-model="category"
               :state="categoryState"
             ></b-form-input>
           </b-form-group>
           <b-form-group
             label="Description"
-            label-for="description-input"
             invalid-feedback="Description is required"
             :state="descriptionState"
           >
@@ -271,17 +304,18 @@
               id="description-input"
               v-model="description"
               :state="descriptionState"
+              required
             ></b-form-input>
           </b-form-group>
           <b-form-group
             label="Image Link"
-            type="URL"
-            label-for="image-input"
             invalid-feedback="Image is required"
             :state="imageState"
           >
             <b-form-input
               id="image-input"
+              type="URL"
+              required
               v-model="image"
               :state="imageState"
             ></b-form-input>
@@ -302,7 +336,12 @@
         list="scores-list"
         v-on:change="(id) => requestScore(id)"
       ></b-form-input>
-      <b-button size="m" variant="danger" v-b-modal.modal-clear-leaderboard>
+      <b-button
+        size="m"
+        variant="danger"
+        v-b-modal.modal-clear-leaderboard
+        class="responsive-button"
+      >
         Clear All Leaderboards
       </b-button>
       <b-modal
@@ -313,7 +352,7 @@
         ok-variant="success"
         ok-title="Yes"
         cancel-title="No"
-        @ok="deleteAllScore"
+        @ok="deleteAllScore()"
       >
         <p>
           This action will delete all scores from all leaderboards in all
@@ -331,12 +370,12 @@
           :items="scores"
           :fields="scoreFields"
         >
-          <template #cell(_id)="data">
+          <template #cell(_id)="scoreData">
             <b-button
               size="sm"
               variant="danger"
-              v-on:click="deleteScore(data.value)"
-              class="mr-2"
+              v-on:click="deleteScore(scoreData.value)"
+              class="mr-2 responsive-button"
             >
               Delete
             </b-button>
@@ -421,10 +460,11 @@ export default {
           sortable: false
         }
       ],
-      descriptionState: null,
-      nameState: null,
-      imageState: null,
-      categoryState: null,
+      quizname: '',
+      nameState: '',
+      descriptionState: '',
+      imageState: '',
+      categoryState: '',
       selectedQuiz: '',
       questionDescription: '',
       questionDescriptionState: null,
@@ -534,7 +574,7 @@ export default {
         })
     },
     checkFormValidity() {
-      const valid = this.$refs.form.checkValidity() // boolean
+      const valid = this.$refs.quizForm.checkValidity() // boolean
       this.nameState = valid
       return valid
     },
@@ -543,10 +583,14 @@ export default {
       this.nameState = null
       this.description = ''
       this.descriptionState = null
-      this.image = ''
+      this.image = null
       this.imageState = null
-      this.category = ''
+      this.category = null
       this.categoryState = null
+      this.questionScore = null
+      this.questionScoreState = null
+      this.questionDescription = null
+      this.questionDescriptionState = null
     },
     handleOk(bvModalEvt) {
       // Prevent modal from closing
@@ -559,12 +603,53 @@ export default {
       if (!this.checkFormValidity()) {
         return
       }
-      // Push the name to submitted names
       this.createQuiz()
       // Hide the modal manually
       this.$nextTick(() => {
         this.$bvModal.hide('modal-create-quiz')
       })
+    },
+    validateForms(currentModal, bvModalEvt) {
+      bvModalEvt.preventDefault()
+      console.log('validateForms initiliazed')
+      // make an AND statement e.g. if (is a URL && x.checkValidity() )
+      if (
+        currentModal === 'modal-create-quiz' ||
+        currentModal === 'modal-edit-quiz'
+      ) {
+        this.nameState = this.$refs.quizForm['name-input'].checkValidity()
+        this.categoryState =
+          this.$refs.quizForm['category-input'].checkValidity()
+        this.descriptionState =
+          this.$refs.quizForm['description-input'].checkValidity()
+        this.imageState = this.$refs.quizForm['image-input'].checkValidity()
+        if (this.$refs.quizForm.checkValidity()) {
+          if (currentModal === 'modal-create-quiz') {
+            this.createQuiz()
+          } else this.putQuiz()
+          // Hide the modal manually
+          this.$nextTick(() => {
+            this.$bvModal.hide(currentModal)
+          })
+        }
+      }
+      if (currentModal === 'modal-add-question') {
+        this.questionDescriptionState =
+          this.$refs.questionForm['questionDescription-input'].checkValidity()
+        this.questionOptionsState =
+          this.$refs.questionForm['questionOptions-input'].checkValidity()
+        this.questionAnswerState =
+          this.$refs.questionForm['questionAnswer-input'].checkValidity() // Must match one option
+        this.questionScoreState =
+          this.$refs.questionForm['questionScore-input'].checkValidity() // Must be an int
+
+        if (this.$refs.questionForm.checkValidity()) {
+          this.createQuestion()
+          this.$nextTick(() => {
+            this.$bvModal.hide(currentModal)
+          })
+        }
+      }
     },
     createQuiz() {
       Api.post('/quizes', {
@@ -633,16 +718,45 @@ export default {
             this.questions.splice(index, 1)
           }
         })
+    },
+    putQuiz() {
+      Api.put(`/quizes/${this.selectedQuiz}`, {
+        name: this.name,
+        description: this.description,
+        image: this.image,
+        category: this.category
+      }).catch((error) => {
+        console.error('Error:', error)
+      })
+    },
+    patchQuestionScore(id, bvModalEvt) {
+      bvModalEvt.preventDefault()
+      console.log(this.questionScore)
+      const valid = this.$refs.patchScore.checkValidity()
+      this.questionScoreState = valid
+      if (valid) {
+        Api.patch(`/questions/${id}`, {
+          score: this.questionScore
+        }).catch((error) => {
+          console.error('Error:', error)
+        })
+        this.$nextTick(() => {
+          this.$bvModal.hide('modal-patch-score')
+        })
+      }
     }
   }
 }
 </script>
 <style>
 .buttons {
-  margin: 15% auto auto auto;
+  margin: 10% auto auto auto;
 }
 .buttons button {
   margin: 10px;
+}
+.buttons h1 {
+  margin-bottom: 50px;
 }
 
 .btn {
